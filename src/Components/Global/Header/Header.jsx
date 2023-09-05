@@ -33,7 +33,7 @@ function Header() {
               `flex items-center justify-center w-fit h-fit pr-4 gap-3 transition-all duration-300 cursor-pointer 
               relative border border-light-secondary-500 rounded-full
               ${profileMenu ? 'bg-light-secondary-500 dark:bg-dark-primary-700' : 'bg-transparent'}
-              dark:border-dark-primary-700 
+              dark:border-dark-primary-500 
               `
             }>
             <img src={`${import.meta.env.VITE_ASSETS}/Clients-images/${currentUser.image}`} className="max-w-[40px] rounded-full shadow-lg" />

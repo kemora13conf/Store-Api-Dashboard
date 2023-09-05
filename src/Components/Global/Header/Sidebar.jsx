@@ -2,23 +2,22 @@ import React, { useContext } from "react";
 import { AppContext } from "../../../App";
 import { toast } from "react-toastify";
 import MyLink from "../MyLink";
-import app from './../../../../../Server/index';
 
 function Sidebar({ openedSidebar, width }) {
-  const { setIsAuth, setCurrentUser, activeTab } = useContext(AppContext);
+  const { setIsAuth, setCurrentUser, activeTab, language } = useContext(AppContext);
   const tabs = [
     {
-        name: "Dashboard",
+        name: language.dashboard,
         icon: "fas fa-tachometer-alt",
         link: ""
     },
     {
-        name: "Categories",
+        name: language.categories,
         icon: "fas fa-list",
         link: "categories"
     },
     {
-        name: "Products",
+        name: language.products,
         icon: "fas fa-box",
         link: "products"
     },  

@@ -37,7 +37,7 @@ function ProfileMenu({active}) {
         transition={{ duration: .3 }}        
         className={`
             absolute top-[calc(100%+10px)] right-0 bg-light-secondary-500 h-auto px-3 py-3 w-full min-w-[270px] rounded-xl shadow-lg 
-            flex flex-col gap-1 dark:bg-dark-primary-700
+            flex flex-col gap-1 dark:bg-dark-primary-700 dark:shadow-xl
         `}>
         <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-lg font-semibold">Profile</h1>
         <MyLink to='/profile' 
@@ -66,6 +66,8 @@ function ProfileMenu({active}) {
             <h1 className="text-light-quarternary-400 text-sm font-semibold">Dark Mode</h1>
             <Toggle toggled={theme == 'dark' ? true : false} onClick={handleClik} />
         </div>
+        
+        
         
         <div className="w-[80%] mx-auto h-[1px] bg-light-secondary-300 dark:bg-dark-secondary-300 my-2"></div>
 

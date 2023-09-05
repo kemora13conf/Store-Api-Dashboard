@@ -8,7 +8,7 @@ import Alert from '../Global/Alert/Alert';
 function CategoryForm() {
     // get the id param from the url
     const { id } = useParams();
-    const { setActiveTab, setLoaded, reqFinished } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, language } = useContext(AppContext);
     const [ category, setCategory ] = useState({});
     const [ loading, setLoading ] = useState(false);
     const [ form, setForm ] = useState({
@@ -176,7 +176,7 @@ function CategoryForm() {
     // fetch the category data
     useEffect(() => {
         setLoaded(true);
-        setActiveTab("Categories");
+        setActiveTab(language.categories);
         if(id) {
             Fetch(import.meta.env.VITE_API+'/categories/'+id, 'GET')
             .then(res => {

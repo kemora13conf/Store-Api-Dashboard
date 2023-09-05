@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 
 function Categories() {
-    const { setActiveTab, setLoaded, reqFinished, setReqFinished } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language } = useContext(AppContext);
     const [ categories, setCategories ] = useState([]);
 
     const changeState = (state, id) => {
@@ -73,7 +73,7 @@ function Categories() {
 
 
     useEffect(() => {
-        setActiveTab("Categories");
+        setActiveTab(language.categories);
         Fetch(import.meta.env.VITE_API+'/categories', 'GET')
         .then(res => {
           setCategories(res.data);
@@ -88,7 +88,7 @@ function Categories() {
     <div>
       <div className="flex justify-between items-center w-full px-4 py-4">
         <h1 className="w-full text-light-primary-500dark-soft text-xl font-medium">
-          Categories
+          {language.categories}
         </h1>
         <MyLink to='create' className="flex w-full max-w-fit  justify-center items-center gap-2 px-4 py-2 bg-tertiary rounded-xl shadow-md text-white font-semibold transition-all duration-300 hover:bg-secondary">
           <i className="fas fa-plus"></i>

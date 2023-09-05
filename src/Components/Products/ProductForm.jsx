@@ -8,7 +8,7 @@ import Alert from '../Global/Alert/Alert';
 function ProductForm() {
     // get the id param from the url
     const { id } = useParams();
-    const { setActiveTab, setLoaded, reqFinished } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, language } = useContext(AppContext);
     const [ product, setProduct ] = useState({});
     const [ categories, setCategories ] = useState([]);
     const [ loading, setLoading ] = useState(false);
@@ -187,7 +187,7 @@ function ProductForm() {
     // fetch the product data
     useEffect(() => {
         setLoaded(true);
-        setActiveTab("Products");
+        setActiveTab(language.products);
         if(id) {
             Fetch(import.meta.env.VITE_API+'/products/'+id, 'GET')
             .then(res => {

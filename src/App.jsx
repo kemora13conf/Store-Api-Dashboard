@@ -23,6 +23,8 @@ const AppProvider = ({ children }) => {
   const [reqFinished, setReqFinished] = useState(false);
   const [theme, setTheme] = useState('light')
   const [ profileMenu, setProfileMenu ] = useState(false)
+  const [ selectedLanguage, setSelectedLanguage ] = useState('English')
+  const [ language, setLanguage ] = useState({})
 
   const stateStore = {
     activeTab,
@@ -39,6 +41,8 @@ const AppProvider = ({ children }) => {
     setTheme,
     profileMenu,
     setProfileMenu,
+    language,
+    setLanguage
   };
 
   async function checkAuth() {
@@ -52,7 +56,7 @@ const AppProvider = ({ children }) => {
         if (res.type == "success") {
           setCurrentUser(res.data.current_user);
           setTheme(res.data.current_user.theme)
-          
+          // setSelectedLanguage(res.data.current_user.language)
           setIsAuth(true);
         } else {
           setIsAuth(false);
@@ -68,11 +72,42 @@ const AppProvider = ({ children }) => {
   useEffect(() => {
     checkAuth();
   }, [loaded]);
+
+  const configLanguage = () => {
+      localStorage.setItem('language', selectedLanguage)
+      fetch(`${import.meta.env.VITE_ASSETS}/Languages/${selectedLanguage}/default.json`)
+      .then(res => res.json())
+      .then(res => {
+        setLanguage(res)
+        localStorage.setItem('languageObj', JSON.stringify(res))
+      })
+  }
+
+  useEffect(() => {
+    let language = localStorage.getItem('language')
+    if( language != null) {
+      if (selectedLanguage != language) {
+        configLanguage();
+      }else{
+        if(localStorage.getItem('languageObj')) {
+          setLanguage(JSON.parse(localStorage.getItem('languageObj')))
+        }else{
+          configLanguage();
+        }
+      }
+    } else {
+      configLanguage();
+    }
+        
+  }, [selectedLanguage])
+
   useEffect(() => {
     if (theme == 'dark') {
       document.documentElement.classList.add('dark')
+      setSelectedLanguage('English')
     } else {
       document.documentElement.classList.remove('dark')
+      setSelectedLanguage('Frensh')
     }
   }, [theme])
   return (

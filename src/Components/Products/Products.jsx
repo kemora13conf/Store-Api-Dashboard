@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 
 function Products() {
-    const { setActiveTab, setLoaded, reqFinished, setReqFinished } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language } = useContext(AppContext);
     const [ products, setProducts ] = useState([]);
 
     const changeState = (state, id) => {
@@ -68,7 +68,7 @@ function Products() {
 
 
     useEffect(() => {
-        setActiveTab("Products");
+        setActiveTab(language.products);
         Fetch(import.meta.env.VITE_API+'/products', 'GET')
         .then(res => {
           setProducts(res.data);
@@ -83,7 +83,7 @@ function Products() {
     <div>
       <div className="flex justify-between items-center w-full px-4 py-4">
         <h1 className="w-full text-light-primary-500dark-soft text-xl font-medium">
-          Products
+          {language.products}
         </h1>
         <MyLink to='create' className="flex w-full max-w-fit  justify-center items-center gap-2 px-4 py-2 bg-tertiary rounded-md shadow-md text-white font-semibold transition-all duration-300 hover:bg-secondary">
           <i className="fas fa-plus"></i>
