@@ -4,3 +4,7 @@
 .activeTab{
     @apply bg-light-secondary-500 shadow dark:bg-dark-primary-600 font-medium;
 }
+
+.selected-language{
+    @apply bg-light-secondary-500 shadow dark:bg-dark-primary-600 ;
+}

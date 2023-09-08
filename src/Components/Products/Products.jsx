@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 
 function Products() {
-    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language, selectedLanguage } = useContext(AppContext);
     const [ products, setProducts ] = useState([]);
 
     const changeState = (state, id) => {
@@ -68,7 +68,6 @@ function Products() {
 
 
     useEffect(() => {
-        setActiveTab(language.products);
         Fetch(import.meta.env.VITE_API+'/products', 'GET')
         .then(res => {
           setProducts(res.data);
@@ -76,8 +75,9 @@ function Products() {
         })
     },[]);
     useEffect(() => {
+      setActiveTab(language.products);
       setLoaded(true);
-    }, [reqFinished]);
+    }, [reqFinished, selectedLanguage]);
 
   return (
     <div>

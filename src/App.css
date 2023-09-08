@@ -30,7 +30,7 @@ body{
     height: 2px;
     background: #000;
     left: 0;
-    top: -10px;
+    top: -8px;
     transition: all 300ms ease-in-out;
 }
 .nav-btn span::after{
@@ -40,7 +40,7 @@ body{
     height: 2px;
     background: #000;
     left: 0;
-    top: 10px;
+    top: 8px;
     transition: all 300ms ease-in-out;
 }
 .nav-btn.active{

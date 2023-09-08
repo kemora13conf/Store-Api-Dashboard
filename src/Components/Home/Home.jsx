@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import MyLink from "../Global/MyLink";
 
 function Home() {
-  const { reqFinished, setActiveTab, language, setLoaded } = useContext(AppContext);
-  console.log(reqFinished)
+  const { reqFinished, setActiveTab, language, setLoaded, selectedLanguage } = useContext(AppContext);
+  
   useEffect(() => {
     setLoaded(true);
     setActiveTab(language.dashboard);
-  }, [reqFinished]);
+  }, [reqFinished, selectedLanguage]);
   
   // well lookin modern design for a dashboard home page with a nice animation on the cards and a nice background color
   return (

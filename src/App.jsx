@@ -22,7 +22,6 @@ const AppProvider = ({ children }) => {
   const [loaded, setLoaded] = useState(false);
   const [reqFinished, setReqFinished] = useState(false);
   const [theme, setTheme] = useState('light')
-  const [ profileMenu, setProfileMenu ] = useState(false)
   const [ selectedLanguage, setSelectedLanguage ] = useState('English')
   const [ language, setLanguage ] = useState({})
 
@@ -39,8 +38,8 @@ const AppProvider = ({ children }) => {
     setReqFinished,
     theme,
     setTheme,
-    profileMenu,
-    setProfileMenu,
+    selectedLanguage,
+    setSelectedLanguage,
     language,
     setLanguage
   };
@@ -56,7 +55,7 @@ const AppProvider = ({ children }) => {
         if (res.type == "success") {
           setCurrentUser(res.data.current_user);
           setTheme(res.data.current_user.theme)
-          // setSelectedLanguage(res.data.current_user.language)
+          setSelectedLanguage(res.data.current_user.language)
           setIsAuth(true);
         } else {
           setIsAuth(false);
@@ -97,19 +96,34 @@ const AppProvider = ({ children }) => {
       }
     } else {
       configLanguage();
-    }
-        
+    }    
   }, [selectedLanguage])
 
   useEffect(() => {
     if (theme == 'dark') {
       document.documentElement.classList.add('dark')
-      setSelectedLanguage('English')
     } else {
       document.documentElement.classList.remove('dark')
-      setSelectedLanguage('Frensh')
     }
   }, [theme])
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API}/clients/update-language`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+        },
+        body: JSON.stringify({ language: selectedLanguage })
+    }).then(res => res.json())
+    .then(res => {
+        if (res.type == 'success') {
+            setSelectedLanguage(res.data)
+        }
+    }
+    ).catch(err => {
+        console.error(err)
+    })
+  }, [selectedLanguage])
   return (
     <AppContext.Provider value={stateStore}>{children}</AppContext.Provider>
   );

@@ -20,7 +20,23 @@ function Sidebar({ openedSidebar, width }) {
         name: language.products,
         icon: "fas fa-box",
         link: "products"
-    },  
+    },
+    {
+        name: language.clients,
+        icon: "fas fa-users",
+        link: "clients"
+    },
+    {
+        name: language.orders,
+        icon: "fas fa-shopping-cart",
+        link: "orders"
+    },
+    {
+        name: language.settings,
+        icon: "fas fa-cog",
+        link: "settings"
+    },
+    
   ];
   return (
     <div
@@ -35,6 +51,7 @@ function Sidebar({ openedSidebar, width }) {
       <div className="flex flex-col justify-start w-full gap-4 min-h-[calc(100vh-138px)] md:min-h-[calc(100vh-128px)] flex-grow-0 flex-shrink-0">
         {tabs.map((tab, i) => (
             <MyLink
+                key={i}
                 to={tab.link}
                 className={`
                     ${

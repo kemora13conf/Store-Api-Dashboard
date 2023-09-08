@@ -8,7 +8,7 @@ import Alert from '../Global/Alert/Alert';
 function ProductForm() {
     // get the id param from the url
     const { id } = useParams();
-    const { setActiveTab, setLoaded, reqFinished, language } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage } = useContext(AppContext);
     const [ product, setProduct ] = useState({});
     const [ categories, setCategories ] = useState([]);
     const [ loading, setLoading ] = useState(false);
@@ -200,7 +200,7 @@ function ProductForm() {
             setCategories(res.data);
         })
     }
-    ,[reqFinished]);
+    ,[reqFinished, selectedLanguage]);
     // set the form data
     useEffect(() => {
         if(id) {

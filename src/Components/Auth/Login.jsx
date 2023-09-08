@@ -5,7 +5,7 @@ import { AppContext } from "../../App";
 import { nanoid } from "nanoid";
 
 export default function Login() {
-  const { setIsAuth, setCurrentUser, setLoaded } = useContext(AppContext);
+  const { setIsAuth, setCurrentUser, setLoaded, setTheme, setSelectedLanguage } = useContext(AppContext);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState({});
@@ -24,6 +24,8 @@ export default function Login() {
           localStorage.setItem("jwt", res.data.token);
           toast.success(res.message);
           setCurrentUser(res.data.client);
+          setTheme(res.data.client.theme)
+          setSelectedLanguage(res.data.client.language)
           setIsAuth(true);
         } else {
           setErrors({ [res.type]: res.message });

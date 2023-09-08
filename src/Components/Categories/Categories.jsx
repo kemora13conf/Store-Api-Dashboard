@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 
 function Categories() {
-    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language, selectedLanguage } = useContext(AppContext);
     const [ categories, setCategories ] = useState([]);
 
     const changeState = (state, id) => {
@@ -82,71 +82,52 @@ function Categories() {
     },[]);
 
     useEffect(() => {
+      setActiveTab(language.categories);
       setLoaded(true);
-    }, [reqFinished]);
+    }, [reqFinished, selectedLanguage]);
   return (
     <div>
-      <div className="flex justify-between items-center w-full px-4 py-4">
-        <h1 className="w-full text-light-primary-500dark-soft text-xl font-medium">
-          {language.categories}
-        </h1>
-        <MyLink to='create' className="flex w-full max-w-fit  justify-center items-center gap-2 px-4 py-2 bg-tertiary rounded-xl shadow-md text-white font-semibold transition-all duration-300 hover:bg-secondary">
-          <i className="fas fa-plus"></i>
-          <p className=''>new category</p>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold text-dark-primary-500 dark:text-light-primary-500">{language.categories}</h1>
+        <MyLink to="/categories/add" className="flex items-center justify-center px-4 py-2 rounded-md bg-rose-600 text-white dark:bg-rose-500 dark:text-white hover:bg-rose-500 dark:hover:bg-rose-400 transition-all duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clipRule="evenodd" />
+          </svg>
+          {language.addCategory}
         </MyLink>
       </div>
+      <div className="mt-4">
+        <div className="flex items-center justify-between px-4 py-2 bg-light-secondary-500 dark:bg-dark-primary-500 rounded-md">
+          <p className="text-sm font-medium text-dark-primary-500 dark:text-light-primary-500">{language.categories}</p>
+          <p className="text-sm font-medium text-dark-primary-500 dark:text-light-primary-500">{language.status}</p>
+          <p className="text-sm font-medium text-dark-primary-500 dark:text-light-primary-500">{language.actions}</p>
+        </div>
+        <div className="mt-2">
+          {
+            categories.map(category => (
+              <div key={category._id} className="flex items-center justify-between px-4 py-2 bg-light-secondary-500 dark:bg-dark-primary-500 rounded-md mt-2">
+                <p className="text-sm font-medium text-dark-primary-500 dark:text-light-primary-500">{category.name}</p>
+                <Toggle state={category.enabled} onChange={(state) => changeState(state, category._id)} />
+                <div className="flex items-center gap-2">
+                  <MyLink to={`/categories/edit/${category._id}`} className="flex items-center justify-center px-2 py-1 rounded-md bg-tertiary text-white dark:bg-tertiary dark:text-white hover:bg-secondary dark:hover:bg-secondary transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    </svg>
+                    {language.edit}
+                  </MyLink>
+                  <button onClick={() => deleteCategory(category._id)} className="flex items-center justify-center px-2 py-1 rounded-md bg-rose-600 text-white dark:bg-rose-500 dark:text-white hover:bg-rose-500 dark:hover:bg-rose-400 transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    </svg>
+                    {language.delete}
 
-      <div className="w-full max-w-[1000px] mx-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="text-sm font-semibold text-gray-800">
-              <th className="px-4 py-3 text-left">Name</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm font-medium text-gray-700">
-            <AnimatePresence>
-              {
-                categories?.map((category, index) =>{
-                  return (
-                    <motion.tr
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      exit={{ opacity: 0, y: -20}}
-                      key={index} className="border-b border-gray-200 hover:bg-gray-100 overflow-hidden">
-                      <td className="px-4 py-3">{category.name}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 text-xs font-semibold ${category.enabled ? 'text-green-600' : 'bg-red-600'} bg-green-200 rounded-full`}>
-                          { category.enabled ? 'Enabled' : 'Disabled' }
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="w-full h-auto relative flex gap-2">
-                          <Toggle
-                            toggled={category.enabled}
-                            onClick={(state) => changeState(state, category._id)}
-                          />
-                          <MyLink to={`${category._id}/update`} className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-light-primary-500light text-light-primary-500dark-soft hover:bg-light-primary-500dark-soft hover:text-light-primary-500light transition-all duration-300">
-                            <i className="fas fa-pen"></i>
-                          </MyLink >
-                          <button
-                            onClick={() => {deleteCategory(category._id)}} 
-                            className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-red-600 text-white hover:bg-red-700 transition-all duration-300">
-                            <i className="fas fa-trash"></i>
-                          </button>
-                        </div>
-                      </td>
-                    </motion.tr>
-                  )
-                })
-              }
-            </AnimatePresence>
-          </tbody>
-        </table>
+                  </button>
+                </div>
+              </div>
+            ))
+          }
+        </div>
       </div>
     </div>
+    
   )
 }
 

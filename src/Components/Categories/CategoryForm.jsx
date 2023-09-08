@@ -8,7 +8,7 @@ import Alert from '../Global/Alert/Alert';
 function CategoryForm() {
     // get the id param from the url
     const { id } = useParams();
-    const { setActiveTab, setLoaded, reqFinished, language } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage } = useContext(AppContext);
     const [ category, setCategory ] = useState({});
     const [ loading, setLoading ] = useState(false);
     const [ form, setForm ] = useState({
@@ -184,7 +184,7 @@ function CategoryForm() {
             })
         }
     }
-    ,[reqFinished]);
+    ,[reqFinished, selectedLanguage]);
     // set the form data
     useEffect(() => {
         if(id) {
