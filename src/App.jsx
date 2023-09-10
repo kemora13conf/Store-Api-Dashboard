@@ -84,6 +84,7 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     let language = localStorage.getItem('language')
+    localStorage.removeItem('languageObj')
     if( language != null) {
       if (selectedLanguage != language) {
         configLanguage();
