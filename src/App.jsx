@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import { AnimatePresence } from "framer-motion";
@@ -100,11 +100,14 @@ const AppProvider = ({ children }) => {
     }    
   }, [selectedLanguage])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let randomId = Math.random().toString(36).substring(7);
     if (theme == 'dark') {
       document.documentElement.classList.add('dark')
+      import('./ScrollBarStyles/darkScrollbar.css?v='+randomId)
     } else {
       document.documentElement.classList.remove('dark')
+      import('./ScrollBarStyles/lightScrollbar.css?v='+randomId)
     }
   }, [theme])
   useEffect(() => {

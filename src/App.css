@@ -1,7 +1,6 @@
 body{
-    @apply bg-light-secondary-100 dark:bg-dark-primary-600;
+    @apply bg-light-secondary-100 dark:bg-dark-primary-600 scroll-smooth ;
 }
-
 
 .nav-btn{
     width: 35px;

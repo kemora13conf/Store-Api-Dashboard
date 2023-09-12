@@ -40,7 +40,7 @@ function CheckBox(props) {
         />
         <div className={`
                 w-[20px] h-[20px] border border-light-quarternary-500 dark:border-dark-quarternary-500 
-                rounded-md flex justify-center items-center transition-all duration-300
+                rounded-md flex justify-center items-center transition-all duration-300 
                 ${checked ? 'bg-dark-primary-500 dark:bg-light-primary-500' : ''}
 
                 `}>

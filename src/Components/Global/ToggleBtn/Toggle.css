@@ -20,7 +20,7 @@
     bottom: 0;
     background: #2c3e50;
     transition: 0.3s;
-    padding: 2.5px;
+    padding: 3px;
     border-radius: 30px;
 }
 .toggle-btn span:before {
