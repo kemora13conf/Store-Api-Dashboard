@@ -5,6 +5,7 @@ import MyLink from '../MyLink';
 import { Toggle } from '../ToggleBtn/Toggle';
 import SelectBox from '../SelectBox/SelectBox';
 import Option from '../SelectBox/Option';
+import Menu from '../SelectBox/Menu';
 
 function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
     const { currentUser, theme, setTheme, setIsAuth, setCurrentUser, language, selectedLanguage, setSelectedLanguage } = useContext(AppContext);
@@ -87,16 +88,18 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
                 selected: selectedLanguage,
                 setSelected: setSelectedLanguage,
             }}>
-                <Option value="English" >
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
-                        <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">English</h1>
-                    </div>
-                </Option>
-                <Option value="Frensh" >
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
-                        <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">Frensh</h1>
-                    </div>
-                </Option>
+                <Menu>
+                    <Option value="English" >
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">English</h1>
+                        </div>
+                    </Option>
+                    <Option value="Frensh" >
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">Frensh</h1>
+                        </div>
+                    </Option>
+                </Menu>
             </SelectBox>
         </div>
         
