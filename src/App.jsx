@@ -104,6 +104,7 @@ const AppProvider = ({ children }) => {
     let randomId = Math.random().toString(36).substring(7);
     if (theme == 'dark') {
       document.documentElement.classList.add('dark')
+      /* @vite-ignore */ 
       import('./ScrollBarStyles/darkScrollbar.css?v='+randomId)
     } else {
       document.documentElement.classList.remove('dark')

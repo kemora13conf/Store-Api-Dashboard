@@ -341,7 +341,7 @@ function CategoryForm() {
                                                         className="flex w-[30px] h-[30px] bg-white rounded-full justify-center items-center absolute right-2 top-2 cursor-pointer">
                                                         <i className="fas fa-close"></i>
                                                     </div>
-                                                    <img src={import.meta.env.VITE_ASSETS + '/Categories-image/' + img.name} key={index} className="w-[250px] h-full rounded-xl object-cover" />
+                                                    <img src={import.meta.env.VITE_ASSETS + '/Images/' + img.name} key={index} className="w-[250px] h-full rounded-xl object-cover" />
                                                 </div>
                                             )
                                         })

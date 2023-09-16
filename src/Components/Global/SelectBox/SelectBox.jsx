@@ -14,7 +14,7 @@ const SelectBox = (props) => {
             onClick={() => {
                 setOpened(prv => !prv);
             }} 
-            className={"relative"} >
+            className={"w-full relative max-h-fit"} >
             <div className={"flex items-center gap-4 bg-light-primary-500 dark:bg-dark-primary-500 rounded-xl py-2 px-3 justify-between cursor-pointer"}>
                 <div className="flex items-center justify-center w-fit rounded-md text-light-quarternary-500 dark:text-dark-quarternary-400 text ">
                     {selected}
