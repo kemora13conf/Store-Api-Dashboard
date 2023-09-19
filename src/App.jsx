@@ -13,6 +13,7 @@ import Categories from "./Components/Categories/Categories";
 import Products from "./Components/Products/Products";
 import CategoryForm from "./Components/Categories/CategoryForm";
 import ProductForm from "./Components/Products/ProductForm";
+import ConfirmProvider from "./Components/Global/Popups/ConfirmContainer";
 
 const AppContext = createContext();
 const AppProvider = ({ children }) => {
@@ -140,37 +141,39 @@ function App() {
       <AppProvider>
         <AnimatePresence mode="wait">
           <ToastContainer />
-          <Routes>
-            <Route path="/*">
+          <ConfirmProvider>
+            <Routes>
+              <Route path="/*">
 
-              <Route element={<ProtectedRoute />}>
-                <Route element={<NavigationBar />}>
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<NavigationBar />}>
 
-                  <Route index element={<Home />} />
+                    <Route index element={<Home />} />
 
-                  <Route path="categories/*">
-                    <Route index element={<Categories />} />
-                    <Route path="create" element={<CategoryForm />} />
-                    <Route path=":id/update" element={<CategoryForm />} />
+                    <Route path="categories/*">
+                      <Route index element={<Categories />} />
+                      <Route path="create" element={<CategoryForm />} />
+                      <Route path=":id/update" element={<CategoryForm />} />
+                    </Route>
+
+                    <Route path="products/*">
+                      <Route index element={<Products />} />
+                      <Route path="create" element={<ProductForm />} />
+                      <Route path=":id/update" element={<ProductForm />} />
+                    </Route>
+
                   </Route>
-
-                  <Route path="products/*">
-                    <Route index element={<Products />} />
-                    <Route path="create" element={<ProductForm />} />
-                    <Route path=":id/update" element={<ProductForm />} />
-                  </Route>
-
                 </Route>
+
+                <Route element={<Locked />}>
+                  <Route path="login" element={<Login />} />
+                </Route>
+
+                <Route path='*' element={<Navigate to='/' />} />
+
               </Route>
-
-              <Route element={<Locked />}>
-                <Route path="login" element={<Login />} />
-              </Route>
-
-              <Route path='*' element={<Navigate to='/' />} />
-
-            </Route>
-          </Routes>
+            </Routes>
+          </ConfirmProvider>
         </AnimatePresence>
       </AppProvider>
     </BrowserRouter>

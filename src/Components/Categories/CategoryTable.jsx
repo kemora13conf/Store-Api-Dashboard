@@ -5,9 +5,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Toggle } from "../Global/ToggleBtn/Toggle";
 import MyLink from "../Global/MyLink";
 import Fetch from "../utils";
-import Alert from "../Global/Alert/Alert";
+import { ConfirmContext } from "../Global/Popups/ConfirmContainer";
 import { toast } from "react-toastify";
-import CategoriesFooter from "./CategoriesFooter";
 import { PaginationContext } from "./Categories";
 
 function CategoryTable({
@@ -16,11 +15,10 @@ function CategoryTable({
   checkAll,
   setCheckAll,
 }) {
-  const {
-    categories,
-    setCategories,
-  } = useContext(PaginationContext);
+  const { categories, setCategories } = useContext(PaginationContext);
+  console.log(categories);
   const { language } = useContext(AppContext);
+  const { confirmPrompt } = useContext(ConfirmContext);
   const changeState = (state, id) => {
     Fetch(
       import.meta.env.VITE_API + "/categories/change-state-category/" + id,
@@ -46,44 +44,26 @@ function CategoryTable({
   };
 
   const deleteCategory = async (id) => {
-    Alert({
-      title: "Are you sure you want to delete this category ?",
-      message: "You won't be able to revert this!",
-      icon: "warning",
-      buttons: [
-        {
-          text: "Yes, delete it!",
-          type: "primary",
-        },
-        {
-          text: "Cancel",
-          type: "secondary",
-        },
-      ],
-      close: async (closeAlert) => {
-        await new Promise((resolve) => {
-          Fetch(
-            import.meta.env.VITE_API + "/categories/delete-category/" + id,
-            "DELETE"
-          )
-            .then((res) => {
-              if (res.type == "success") {
-                toast.success("Category deleted successfully");
-                setCategories((prv) =>
-                  prv.filter((category) => category._id !== id)
-                );
-              } else {
-                toast.error(res.message);
-              }
-              resolve();
-            })
-            .catch((err) => {
-              toast.error("Something went wrong");
-              resolve();
-            });
-          closeAlert();
-        });
+    confirmPrompt({
+      title: "Delete Category",
+      message: "Are you sure you want to delete this category?",
+      confirmText: "Yes, Delete it!",
+      cancelText: "No, Cancel!",
+      confirm: () => {
+        Fetch(import.meta.env.VITE_API + "/categories/" + id, "DELETE").then(
+          (res) => {
+            if (res.type === "success") {
+              setCategories((prv) => {
+                return prv.filter((category) => category._id !== id);
+              });
+              toast.success(res.message);
+            } else {
+              toast.error(res.message);
+            }
+          }
+        );
       },
+      cancel: () => {},
     });
   };
   return (
@@ -157,7 +137,7 @@ function CategoryTable({
                         <div className="line-clamp-1">{category.description}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <div className="w-fit h-auto relative flex gap-2 items-center p-2 dark:bg-dark-primary-500 dark:shadow-dark rounded-full">
+                        <div className="w-fit h-auto relative flex gap-4 items-center px-4 py-2 dark:bg-dark-primary-500 dark:shadow-dark rounded-lg">
                           <Toggle
                             toggled={category.enabled}
                             onClick={(state) => changeState(state, category._id)}
@@ -186,7 +166,7 @@ function CategoryTable({
                      bg-light-secondary-100 dark:bg-dark-primary-600
                       text-light-quarternary-500 dark:text-dark-quarternary-600
                   ">
-                  <td colSpan={3}>
+                  <td colSpan={4}>
                     <div className="w-full px-3 py-4 text-center text-lg text-light-quarternary-500 dark:text-dark-quarternary-500">
                       No categories found
                     </div>
