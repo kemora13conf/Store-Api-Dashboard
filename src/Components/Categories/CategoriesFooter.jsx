@@ -14,8 +14,7 @@ function CategoriesFooter() {
     totalPages,
     setTotalPages,
   } = useContext(PaginationContext);
-  const { language } = useContext(AppContext);
-  console.log("items per page ", itemsPerPage);
+
   return (
     <div
       className="

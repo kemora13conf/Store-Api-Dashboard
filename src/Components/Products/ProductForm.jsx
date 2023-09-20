@@ -3,7 +3,7 @@ import { AppContext } from '../../App';
 import { useNavigate, useParams } from 'react-router-dom';
 import Fetch from '../utils';
 import { toast } from 'react-toastify';
-import Alert from '../Global/Popups/ConfirmContainer';
+import Alert from '../Global/Popups/PopupsContainer';
 
 function ProductForm() {
     // get the id param from the url

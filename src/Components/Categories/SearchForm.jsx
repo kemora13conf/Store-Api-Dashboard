@@ -4,7 +4,8 @@ import { PaginationContext } from './Categories';
 
 function SearchForm() {
     const { language } = useContext(AppContext);
-    const { setCategories, search, setSearch  } = useContext(PaginationContext);
+    console.log(AppContext)
+    const { search, setSearch  } = useContext(PaginationContext);
     const handleSubmit = (e) => {
         e.preventDefault();
     }

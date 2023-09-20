@@ -5,21 +5,23 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Toggle } from "../Global/ToggleBtn/Toggle";
 import MyLink from "../Global/MyLink";
 import Fetch from "../utils";
-import { ConfirmContext } from "../Global/Popups/ConfirmContainer";
+import { PopupsContext } from "../Global/Popups/PopupsContainer";
 import { toast } from "react-toastify";
 import { PaginationContext } from "./Categories";
 
 function CategoryTable({
-  checkedItems,
-  setCheckedItems,
-  checkAll,
-  setCheckAll,
-}) {
+    checkedItems,
+    setCheckedItems,
+    checkAll,
+    setCheckAll,
+  }) {
+
   const { categories, setCategories } = useContext(PaginationContext);
-  console.log(categories);
-  const { language } = useContext(AppContext);
-  const { confirmPrompt } = useContext(ConfirmContext);
+  const { language, setReqFinished, theme } = useContext(AppContext);
+  const { setConfirm } = useContext(PopupsContext);
+
   const changeState = (state, id) => {
+    
     Fetch(
       import.meta.env.VITE_API + "/categories/change-state-category/" + id,
       "PUT",
@@ -44,27 +46,33 @@ function CategoryTable({
   };
 
   const deleteCategory = async (id) => {
-    confirmPrompt({
+    setConfirm({
       title: "Delete Category",
       message: "Are you sure you want to delete this category?",
       confirmText: "Yes, Delete it!",
       cancelText: "No, Cancel!",
-      confirm: () => {
+      confirm: (close) => {
         Fetch(import.meta.env.VITE_API + "/categories/" + id, "DELETE").then(
           (res) => {
             if (res.type === "success") {
               setCategories((prv) => {
                 return prv.filter((category) => category._id !== id);
               });
-              toast.success(res.message);
+              setReqFinished(false);
+              toast.success(res.message, {
+                theme: theme,
+              });
             } else {
-              toast.error(res.message);
+              toast.error(res.message, {
+                theme: theme,
+              });
             }
+            close();
           }
         );
-      },
-      cancel: () => {},
+      }
     });
+
   };
   return (
     <div className="w-full rounded-md overflow-y-visible overflow-x-auto gap-3">
@@ -137,7 +145,7 @@ function CategoryTable({
                         <div className="line-clamp-1">{category.description}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <div className="w-fit h-auto relative flex gap-4 items-center px-4 py-2 dark:bg-dark-primary-500 dark:shadow-dark rounded-lg">
+                        <div className="w-fit h-auto relative flex gap-4 items-center px-4 py-2  rounded-lg">
                           <Toggle
                             toggled={category.enabled}
                             onClick={(state) => changeState(state, category._id)}

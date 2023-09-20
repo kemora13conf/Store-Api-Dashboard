@@ -4,7 +4,7 @@ import Fetch from '../utils';
 import { Toggle } from '../Global/ToggleBtn/Toggle';
 import { motion, AnimatePresence } from 'framer-motion';
 import MyLink from '../Global/MyLink';
-import Alert from '../Global/Popups/ConfirmContainer';
+import Alert from '../Global/Popups/PopupsContainer';
 import { toast } from 'react-toastify';
 
 

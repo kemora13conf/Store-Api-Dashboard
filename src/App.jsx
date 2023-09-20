@@ -13,7 +13,8 @@ import Categories from "./Components/Categories/Categories";
 import Products from "./Components/Products/Products";
 import CategoryForm from "./Components/Categories/CategoryForm";
 import ProductForm from "./Components/Products/ProductForm";
-import ConfirmProvider from "./Components/Global/Popups/ConfirmContainer";
+import ConfirmProvider from "./Components/Global/Popups/PopupsContainer";
+import PopupsProvider from "./Components/Global/Popups/PopupsContainer";
 
 const AppContext = createContext();
 const AppProvider = ({ children }) => {
@@ -141,7 +142,7 @@ function App() {
       <AppProvider>
         <AnimatePresence mode="wait">
           <ToastContainer />
-          <ConfirmProvider>
+          <PopupsProvider>
             <Routes>
               <Route path="/*">
 
@@ -152,14 +153,10 @@ function App() {
 
                     <Route path="categories/*">
                       <Route index element={<Categories />} />
-                      <Route path="create" element={<CategoryForm />} />
-                      <Route path=":id/update" element={<CategoryForm />} />
                     </Route>
 
                     <Route path="products/*">
                       <Route index element={<Products />} />
-                      <Route path="create" element={<ProductForm />} />
-                      <Route path=":id/update" element={<ProductForm />} />
                     </Route>
 
                   </Route>
@@ -173,7 +170,7 @@ function App() {
 
               </Route>
             </Routes>
-          </ConfirmProvider>
+          </PopupsProvider>
         </AnimatePresence>
       </AppProvider>
     </BrowserRouter>
