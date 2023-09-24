@@ -7,21 +7,22 @@ import MyLink from "../Global/MyLink";
 import Fetch from "../utils";
 import { PopupsContext } from "../Global/Popups/PopupsContainer";
 import { toast } from "react-toastify";
-import { PaginationContext } from "./Categories";
 
-function CategoryTable({
+function Table(props) {
+  const {
+    categories,
+    setCategories,
     checkedItems,
     setCheckedItems,
     checkAll,
     setCheckAll,
-  }) {
-
-  const { categories, setCategories } = useContext(PaginationContext);
+    setOpenedId,
+    setIsFormOpen,
+  } = props;
   const { language, setReqFinished, theme } = useContext(AppContext);
   const { setConfirm } = useContext(PopupsContext);
 
   const changeState = (state, id) => {
-    
     Fetch(
       import.meta.env.VITE_API + "/categories/change-state-category/" + id,
       "PUT",
@@ -45,7 +46,13 @@ function CategoryTable({
     });
   };
 
-  const deleteCategory = async (id) => {
+  const editItem = (id) => {
+    setOpenedId(id);
+    setIsFormOpen(true);
+
+  };
+
+  const deleteItem = async (id) => {
     setConfirm({
       title: "Delete Category",
       message: "Are you sure you want to delete this category?",
@@ -111,12 +118,15 @@ function CategoryTable({
                       exit={{ opacity: 0, y: -20 }}
                       key={index}
                       className="
-                              border-b border-light-secondary-300 dark:border-light-secondary-800 bg-light-secondary-100 dark:bg-dark-primary-600
+                              border-b border-light-secondary-300 dark:border-light-secondary-800 
+                              bg-light-secondary-100 dark:bg-dark-primary-600
+                              transition-all duration-300
+                              hover:bg-light-secondary-200 dark:hover:bg-dark-primary-500
                               text-light-quarternary-500 dark:text-dark-quarternary-600
                             "
                     >
                       <td className="px-4 py-3">
-                        <div className="flex gap-3">
+                        <div className="flex gap-4 justify-center items-center">
                           <CheckBox
                             {...{
                               id: category._id,
@@ -150,15 +160,15 @@ function CategoryTable({
                             toggled={category.enabled}
                             onClick={(state) => changeState(state, category._id)}
                           />
-                          <MyLink
-                            to={`${category._id}/update`}
+                          <button
+                            onClick={() => { editItem(category._id) }}
                             className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-info text-light-primary-500 hover:bg-opacity-70  transition-all duration-300"
                           >
                             <i className="fas fa-pen"></i>
-                          </MyLink>
+                          </button>
                           <button
                             onClick={() => {
-                              deleteCategory(category._id);
+                              deleteItem(category._id);
                             }}
                             className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-error text-white hover:bg-opacity-70 transition-all duration-300"
                           >
@@ -188,4 +198,4 @@ function CategoryTable({
   );
 }
 
-export default CategoryTable;
+export default Table;

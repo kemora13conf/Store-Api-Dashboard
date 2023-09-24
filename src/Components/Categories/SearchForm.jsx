@@ -1,11 +1,9 @@
 import React, { useContext } from 'react'
 import { AppContext } from '../../App';
-import { PaginationContext } from './Categories';
 
-function SearchForm() {
+function SearchForm(props) {
     const { language } = useContext(AppContext);
-    console.log(AppContext)
-    const { search, setSearch  } = useContext(PaginationContext);
+    const { search, setSearch  } = props;
     const handleSubmit = (e) => {
         e.preventDefault();
     }

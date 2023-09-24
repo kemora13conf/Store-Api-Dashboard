@@ -19,6 +19,7 @@ const PopupsProvider = ({ children }) => {
     ref.current.addEventListener('click', (e) => {
       if(e.target === ref.current){
         setConfirm(undefined)
+        console.log('click')
       }
     })
   },[])

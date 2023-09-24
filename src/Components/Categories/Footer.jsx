@@ -1,19 +1,17 @@
 import React, { useContext } from "react";
 import SelectBox from "../Global/SelectBox/SelectBox";
 import Option from "../Global/SelectBox/Option";
-import { PaginationContext } from "./Categories";
 import { AppContext } from "../../App";
 import Menu from "../Global/SelectBox/Menu";
 
-function CategoriesFooter() {
+function Footer(props) {
   const {
     currentPage,
     setCurrentPage,
     itemsPerPage,
     setItemsPerPage,
     totalPages,
-    setTotalPages,
-  } = useContext(PaginationContext);
+  } = props;
 
   return (
     <div
@@ -132,4 +130,4 @@ function CategoriesFooter() {
   );
 }
 
-export default CategoriesFooter;
+export default Footer;

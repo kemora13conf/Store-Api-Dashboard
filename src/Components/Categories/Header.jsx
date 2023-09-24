@@ -3,8 +3,10 @@ import { AppContext } from '../../App';
 import MyLink from '../Global/MyLink';
 import { AnimatePresence, anticipate, motion } from 'framer-motion';
 
-function CategoryHeader({
-    checkedItems
+function Header({
+    checkedItems,
+    setIsFormOpen,
+    setOpenedId
   }) {
   const { language } = useContext(AppContext);
   const deleteMany = () => {
@@ -40,8 +42,11 @@ function CategoryHeader({
               )
             }
           </AnimatePresence>
-          <MyLink 
-            to="/categories/add" 
+          <button
+            onClick={() => {
+              setOpenedId(undefined)
+              setIsFormOpen(true)
+            }}
             className="
                 flex items-center justify-center px-4 pl-2 gap-2 py-2 rounded-md border-[1.5px] border-light-quarternary-300 dark:border-dark-primary-300
                 hover:bg-info hover:text-light-secondary-200 
@@ -53,11 +58,11 @@ function CategoryHeader({
               <path fillRule="evenodd" d="M10 3a1 1 0 00-1 1v5H4a1 1 0 100 2h5v5a1 1 0 102 0v-5h5a1 1 0 100-2h-5V4a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
             {language.add}
-          </MyLink>
+          </button>
         </div>
       </div>
     </div>
   )
 }
 
-export default CategoryHeader
+export default Header
