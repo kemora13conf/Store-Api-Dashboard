@@ -7,14 +7,14 @@ import { motion } from 'framer-motion';
 
 function Form({ id }) {
     // get the id param from the url
-    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage } = useContext(AppContext);
+    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage, theme } = useContext(AppContext);
     const [ category, setCategory ] = useState({});
     const [ loading, setLoading ] = useState(false);
     const [ form, setForm ] = useState({
         name: "",
         title: "",
         description: "",
-        gallery: "",
+        file: "",
         remove: []  
     });
     const [ images, setImages ] = useState([]);
@@ -58,14 +58,6 @@ function Form({ id }) {
                         URL.createObjectURL(file)
                         ]
                 });
-                if(file.type !== 'image/png' && file.type !== 'image/jpeg') {
-                    setErrors(prv => {
-                        return {
-                            ...prv,
-                            gallery: "Only png and jpeg files are allowed"
-                        }
-                    })
-                }
             }
         }
     }
@@ -96,7 +88,7 @@ function Form({ id }) {
                         name: "",
                         title: "",
                         description: "",
-                        gallery: ""
+                        file: ""
                     }
                 });
                 if(res.type != "success") {
@@ -108,7 +100,7 @@ function Form({ id }) {
                     setLoading(false);
                     return;
                 }
-                toast.success("Category updated successfully");
+                toast.success("Category updated successfully", { theme: theme });
                 setCategory(res.data)
                 setLoading(false);
 
@@ -117,7 +109,7 @@ function Form({ id }) {
                 setPreview([])
             })
             .catch(err => {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong", { theme: theme });
                 setLoading(false);
             })
         } else {
@@ -130,12 +122,30 @@ function Form({ id }) {
             })
             .then(res => res.json())
             .then(res => {
-                toast.success("Category added successfully");
+                setErrors(prv => {
+                    return {
+                        ...prv,
+                        name: "",
+                        title: "",
+                        description: "",
+                        file: ""
+                    }
+                });
+                if(res.type != "success") {
+                    setErrors(prv => {
+                        return {
+                            [res.type]: res.message
+                        }
+                    })
+                    setLoading(false);
+                    return;
+                }
+                toast.success("Category added successfully", { theme: theme });
                 setLoading(false);
-                Navigate('/dashboard/categories');
+                Navigate('/categories');
             })
             .catch(err => {
-                toast.error("Something went wrong");
+                toast.error("Something went wrong", { theme: theme });
                 setLoading(false);
             })
         }
@@ -188,7 +198,7 @@ function Form({ id }) {
                 name: "",
                 title: "",
                 description: "",
-                gallery: ""
+                file: ""
 
             }
         })
@@ -202,7 +212,7 @@ function Form({ id }) {
             exit={{ opacity: 0, x: 300 }}
             key={id}
             className='
-                px-4 max-w-[400px]
+                px-4 max-w-[380px] w-full
                 bg-light-primary-500 dark:bg-dark-primary-700
                 min-h-screen
             '>
@@ -323,8 +333,8 @@ function Form({ id }) {
                                 </div>
 
                                 {
-                                    errors.gallery && (
-                                        <p className="error">{errors.gallery}</p>
+                                    errors.file && (
+                                        <p className="error">{errors.file}</p>
                                     )
                                 }
                             </div>
