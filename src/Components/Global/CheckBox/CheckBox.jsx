@@ -20,6 +20,15 @@ function CheckBox(props) {
         }
     }, [checked])
     useEffect(() => {
+        if(props.id != "checkAll"){
+            if(props.checkedItems.includes(props.id)){
+                setChecked(true);
+            } else {
+                setChecked(false);
+            }
+        }
+    },[props.checkedItems])
+    useEffect(() => {
         if(props.checkAll){
             setChecked(true);
         } else {

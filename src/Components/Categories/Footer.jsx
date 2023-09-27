@@ -12,6 +12,7 @@ function Footer(props) {
     setItemsPerPage,
     totalPages,
   } = props;
+  const { language } = useContext(AppContext);
 
   return (
     <div
@@ -20,25 +21,27 @@ function Footer(props) {
             bg-light-secondary-500 dark:bg-dark-primary-700 
         "
     >
-      <div className="w-full px-4 py-2 flex gap-4">
+      <div className="w-full px-4 py-2 flex gap-4 flex-wrap justify-center">
         {/* Items per pages */}
-        <div className="w-full max-h-fit mb-auto max-w-[100px] border border-light-secondary-600 dark:border-dark-secondary-600 rounded-xl">
+        <div className="w-full max-h-fit mb-auto max-w-[100px]">
           <SelectBox
             {...{
               selected: itemsPerPage,
               setSelected: setItemsPerPage,
+              className: "border border-light-secondary-600 dark:border-dark-secondary-600 !rounded-md",
+
             }}
           >
             <Menu 
                 className={
                     ` flex flex-col gap-2 py-2 px-2 
                     absolute bottom-[calc(100%+10px)] left-0 z-index-[2000]
-                    bg-light-primary-500 dark:bg-dark-primary-500 rounded-xl shadow-lg dark:shadow-dark
+                    bg-light-primary-500 dark:bg-dark-primary-500 rounded-md shadow-lg dark:shadow-dark
                     w-full min-w-[100px] h-auto dark:border dark:border-dark-secondary-600`
                 }
             >
                 <Option value={10}>
-                    <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
+                    <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                         <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
                         10
                         </h1>
@@ -71,11 +74,27 @@ function Footer(props) {
         
         {/* current page */}
         <div className="
-                flex items-center justify-center w-fit max-w-[100px] rounded-md 
+                flex items-center justify-center w-fit max-w-fit rounded-md 
                 text-light-quarternary-500 dark:text-dark-quarternary-500 text 
-                mr-auto
+                md:mr-auto
               ">
-          {currentPage} / {totalPages}
+          <div className="flex gap-1 justify-center">
+            <div>
+              { language.showing }
+            </div> 
+            <div className="font-bold">
+              { currentPage } {' '}
+            </div>
+            <div>
+              { language.result +' '+ language.of }
+            </div>
+            <div className="font-bold">
+              { totalPages }
+            </div>
+            <div>
+              { language.results }
+            </div>
+          </div>
         </div>
 
         {/* Pagination */}

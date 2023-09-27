@@ -2,14 +2,39 @@ import React, { useContext } from 'react'
 import { AppContext } from '../../App';
 import MyLink from '../Global/MyLink';
 import { AnimatePresence, anticipate, motion } from 'framer-motion';
+import { PopupsContext } from '../Global/Popups/PopupsContainer';
+import Fetch from '../utils';
+import { toast } from 'react-toastify';
 
 function Header({
     checkedItems,
+    setCheckedItems,
     setIsFormOpen,
-    setOpenedId
+    setOpenedId,
+    setReload,
   }) {
-  const { language } = useContext(AppContext);
+  const { language, theme } = useContext(AppContext);
+  const { setConfirm } = useContext(PopupsContext);
   const deleteMany = () => {
+    setConfirm({
+      title: language.delete +' '+ language.categories,
+      message: language.multiple_delete_msg,
+      confirmText: language.confirm_delete,
+      cancelText: language.cancel_delete,
+      confirm: (close) => {
+        Fetch(`${import.meta.env.VITE_API}/categories/delete-multiple`, "DELETE", { ids: checkedItems })
+        .then((res) => {
+          if (res.type === "success") {
+            setReload(prv => !prv)
+            setCheckedItems(prv => [])
+            toast.success(res.message, { theme })
+          } else {
+            toast.error(res.message, { theme })
+          }
+          close()
+        })
+      }
+    })
   }
   return (
     <div className="

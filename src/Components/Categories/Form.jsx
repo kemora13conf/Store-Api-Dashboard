@@ -4,10 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Fetch from '../utils';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
+import { PopupsContext } from '../Global/Popups/PopupsContainer';
 
-function Form({ id }) {
+function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
     // get the id param from the url
     const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage, theme } = useContext(AppContext);
+    const { setConfirm } = useContext(PopupsContext);
+
     const [ category, setCategory ] = useState({});
     const [ loading, setLoading ] = useState(false);
     const [ form, setForm ] = useState({
@@ -21,7 +24,28 @@ function Form({ id }) {
     const [ preview, setPreview ] = useState([]);
     const [ oldImagesPreview, setOldImagesPreview ] = useState([]);
     const [ errors, setErrors ] = useState({});
-    const Navigate = useNavigate();
+
+    const handleDelete = () => {
+        setConfirm({
+            title: language.delete +' '+ language.category,
+            message: language.category_delete_msg,
+            confirmText: language.confirm_delete,
+            cancelText: language.cancel_delete,
+            confirm: (close) => {
+                Fetch(import.meta.env.VITE_API+'/categories/'+id, 'DELETE')
+                .then(res => {
+                    if(res.type === "success") {
+                        toast.success(res.message, { theme })
+                        setReload(prv => !prv)
+                        setIsFormOpen(false)
+                    } else {
+                        toast.error(res.message, { theme })
+                    }
+                    close()
+                })
+            }
+        })
+    }
 
     const handleInput = (e) => {
         const { name, value } = e.target;
@@ -73,7 +97,7 @@ function Form({ id }) {
             formData.append("images", images[i]);
         }
         if(id) {
-            fetch(import.meta.env.VITE_API+'/categories/update-category/'+id, {
+            fetch(import.meta.env.VITE_API+'/categories/update/'+id, {
                 method: "PUT",
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('jwt')
@@ -103,6 +127,7 @@ function Form({ id }) {
                 toast.success("Category updated successfully", { theme: theme });
                 setCategory(res.data)
                 setLoading(false);
+                setReload(prv => !prv);
 
                 // reset
                 setImages([])
@@ -113,7 +138,7 @@ function Form({ id }) {
                 setLoading(false);
             })
         } else {
-            fetch(import.meta.env.VITE_API+'/categories/create-category', {
+            fetch(import.meta.env.VITE_API+'/categories/create', {
                 method: "POST",
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('jwt')
@@ -142,15 +167,14 @@ function Form({ id }) {
                 }
                 toast.success("Category added successfully", { theme: theme });
                 setLoading(false);
-                Navigate('/categories');
+                setReload(prv => !prv);
+                setIsFormOpen(false);
             })
             .catch(err => {
                 toast.error("Something went wrong", { theme: theme });
                 setLoading(false);
             })
         }
-    }
-    const handleDelete = () => {
     }
 
     // fetch the category data
@@ -212,7 +236,7 @@ function Form({ id }) {
             exit={{ opacity: 0, x: 300 }}
             key={id}
             className='
-                px-4 max-w-[380px] w-full
+                px-4 max-w-[420px] w-full
                 bg-light-primary-500 dark:bg-dark-primary-700
                 min-h-screen
             '>
@@ -221,7 +245,7 @@ function Form({ id }) {
                         text-2xl font-semibold
                         text-light-quarternary-500 dark:text-dark-quarternary-500
                     ">
-                    {id ? "Edit category" : "Add a new category"}
+                    {id ? language.edit+' '+language.category : language.add+' '+language.category}
                 </h1>
                 {
                     id != undefined ? (
@@ -242,7 +266,7 @@ function Form({ id }) {
                                     focus:scale-90
                                 ">
                                 <i className="fas fa-trash"></i>
-                                <h1 className="ml-2 text-sm  hidden md:block">Delete</h1>
+                                <h1 className="ml-2 text-sm  hidden md:block">{ language.delete }</h1>
                             </button>
                         </div>
                     ) : null
@@ -255,7 +279,7 @@ function Form({ id }) {
                             htmlFor="name" 
                             className="label"
                         >
-                            Name
+                            { language.name }
                         </label>
                         <input
                             type="text"
@@ -275,7 +299,7 @@ function Form({ id }) {
                     <div className="flex flex-col gap-2">
                         <label 
                             htmlFor="title" 
-                            className="label">Title</label>
+                            className="label">{ language.title }</label>
                         <input
 
                             type="text"
@@ -294,7 +318,7 @@ function Form({ id }) {
                     <div className="flex flex-col gap-2">
                         <label 
                             htmlFor="description" 
-                            className="label">Description</label>
+                            className="label">{ language.description }</label>
                         <textarea
                             name="description"
                             id="description"
@@ -313,14 +337,14 @@ function Form({ id }) {
                             <div className="flex flex-col gap-2">
                                 <label 
                                     htmlFor="image" 
-                                    className="label">Choose an image</label>
+                                    className="label">{ language.select +' '+ language.image }</label>
                                {/* nice lookin file import with tailwind css */}
                                 <div className="flex gap-2">
                                     <label 
                                         htmlFor="image" 
                                         className="upload-btn ">
                                         <i className="fas fa-upload text-light-primary-500dark-soft"></i>
-                                        <p className="ml-2 text-light-primary-500dark-soft">Upload</p>
+                                        <p className="ml-2 text-light-primary-500dark-soft">{ language.upload }</p>
                                     </label>
                                     <input
                                         type="file"
@@ -340,7 +364,7 @@ function Form({ id }) {
                             </div>
                             <div className="flex gap-2 flex-col">
                                 <label 
-                                    className="label">Images preview</label>
+                                    className="label">{ language.images +' '+ language.preview }</label>
                                 <div 
                                     className="images-preview snap-x snap-mandatory snap-center overflow-x-auto"
                                 >
@@ -361,7 +385,7 @@ function Form({ id }) {
                             </div>
                             <div className="flex gap-2 flex-col">
                                 <label
-                                    className="label">Old images preview</label>
+                                    className="label">{ language.old +' '+ language.images +' '+ language.preview }</label>
                                 <div 
                                     className="images-preview"
                                 >
@@ -407,7 +431,7 @@ function Form({ id }) {
                                 <i className="fas fa-spinner fa-spin"></i>
                             ) : null
                         }
-                        <p className=''>{id ? "save category" : "Add a new category"}</p>
+                        <p className=''>{ id ? language.save +' '+ language.category : language.add +' '+ language.new +' '+ language.category }</p>
                     </button>
                 </form>
             </div>

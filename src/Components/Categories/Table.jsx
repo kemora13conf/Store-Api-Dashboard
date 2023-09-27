@@ -10,8 +10,8 @@ import { toast } from "react-toastify";
 
 function Table(props) {
   const {
-    categories,
-    setCategories,
+    data,
+    setData,
     checkedItems,
     setCheckedItems,
     checkAll,
@@ -24,17 +24,13 @@ function Table(props) {
 
   const changeState = (state, id) => {
     Fetch(
-      import.meta.env.VITE_API + "/categories/change-state-category/" + id,
+      import.meta.env.VITE_API + "/categories/change-state/" + id,
       "PUT",
       { state }
     ).then((res) => {
-      setCategories((prv) => {
+      setData((prv) => {
         return prv.map((category) => {
           if (category._id === id) {
-            console.log({
-              ...category,
-              enabled: state,
-            });
             return {
               ...category,
               enabled: state,
@@ -54,15 +50,15 @@ function Table(props) {
 
   const deleteItem = async (id) => {
     setConfirm({
-      title: "Delete Category",
-      message: "Are you sure you want to delete this category?",
-      confirmText: "Yes, Delete it!",
-      cancelText: "No, Cancel!",
+      title: language.delete +' '+ language.category,
+      message: language.category_delete_msg,
+      confirmText: language.confirm_delete,
+      cancelText: language.cancel_delete,
       confirm: (close) => {
         Fetch(import.meta.env.VITE_API + "/categories/" + id, "DELETE").then(
           (res) => {
             if (res.type === "success") {
-              setCategories((prv) => {
+              setData((prv) => {
                 return prv.filter((category) => category._id !== id);
               });
               setReqFinished(false);
@@ -108,8 +104,8 @@ function Table(props) {
         </thead>
         <tbody className="text-sm font-medium text-gray-700">
           <AnimatePresence>
-            { categories.length > 0
-              ? categories.map((category, index) => {
+            { data.length > 0
+              ? data.map((category, index) => {
                   return (
                     <motion.tr
                       initial={{ opacity: 0, y: -20 }}
@@ -126,7 +122,7 @@ function Table(props) {
                             "
                     >
                       <td className="px-4 py-3">
-                        <div className="flex gap-4 justify-center items-center">
+                        <div className="flex gap-4 justify-start items-center">
                           <CheckBox
                             {...{
                               id: category._id,
@@ -155,14 +151,21 @@ function Table(props) {
                         <div className="line-clamp-1">{category.description}</div>
                       </td>
                       <td className="px-4 py-3">
-                        <div className="w-fit h-auto relative flex gap-4 items-center px-4 py-2  rounded-lg">
+                        <div className="w-fit h-auto flex gap-4 items-center px-4 py-2  rounded-lg">
                           <Toggle
                             toggled={category.enabled}
                             onClick={(state) => changeState(state, category._id)}
                           />
                           <button
                             onClick={() => { editItem(category._id) }}
-                            className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-info text-light-primary-500 hover:bg-opacity-70  transition-all duration-300"
+                            className="
+                              shadow w-8 h-8 
+                              flex justify-center items-center rounded-full 
+                              bg-light-primary-500 dark:bg-dark-secondary-700 
+                              text-light-quarternary-500 dark:text-light-secondary-600
+                              transition-all duration-300
+                              hover:bg-info hover:text-light-secondary-200
+                              dark:hover:bg-info dark:hover:text-light-secondary-200"
                           >
                             <i className="fas fa-pen"></i>
                           </button>
@@ -170,7 +173,14 @@ function Table(props) {
                             onClick={() => {
                               deleteItem(category._id);
                             }}
-                            className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-error text-white hover:bg-opacity-70 transition-all duration-300"
+                            className="
+                              shadow w-8 h-8 
+                              flex justify-center items-center rounded-full 
+                              bg-light-primary-500 dark:bg-dark-secondary-700 
+                              text-light-quarternary-500 dark:text-light-secondary-600
+                              transition-all duration-300
+                              hover:bg-error hover:text-light-secondary-200
+                              dark:hover:bg-error dark:hover:text-light-secondary-200"
                           >
                             <i className="fas fa-trash"></i>
                           </button>

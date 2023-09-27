@@ -26,11 +26,7 @@ function Header() {
       }>
         <div className="flex items-center gap-4 pl-2">
           <div onClick={()=>{setOpenedSidebar(prv => !prv)}}  className={`flex md:hidden nav-btn ${openedSidebar ? 'active' : ''}`}>
-              <span className="
-                        bg-light-quarternary-500 dark:bg-dark-quarternary-500
-                        before:bg-light-quarternary-500 before:dark:bg-dark-quarternary-500
-                        after:bg-light-quarternary-500 after:dark:bg-dark-quarternary-500
-                        "></span>
+              <span></span>
           </div>
           <h1 className="ml-2 text-2xl font-semibold text-light-quarternary-500 dark:text-dark-quarternary-500 ">{activeTab}</h1>
         </div>
