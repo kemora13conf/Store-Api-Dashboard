@@ -40,7 +40,7 @@ function Header({
     <div className="
           w-full @container/head
           bg-light-secondary-500 dark:bg-dark-primary-700
-          px-4 py-3 rounded-md dakr:shadow-dark shadow-light
+          px-4 py-3 rounded-t-md dakr:shadow-dark
         ">
       <div className="w-full flex items-center justify-between gap-2 flex-col @[500px]/head:flex-row">
         <h1 className="text-2xl font-bold text-dark-primary-500 dark:text-light-primary-500 mr-auto">{language.categories}</h1>
@@ -57,7 +57,9 @@ function Header({
                   onClick={deleteMany}
                   disabled={checkedItems?.length == 0}
                   className="
-                      flex items-center justify-center px-4 gap-2 py-2 rounded-md border-[1.5px] border-error  dark:border-dark-primary-300
+                      flex items-center justify-center gap-2 
+                      px-5 pl-3 py-[6px] rounded-md 
+                      border-[1.5px] border-error  dark:border-dark-primary-300
                       hover:bg-error hover:text-light-secondary-200 hover:border-transparent text-error dark:hover:border-transparent
                       transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:scale-90"
                 >
@@ -73,7 +75,9 @@ function Header({
               setIsFormOpen(true)
             }}
             className="
-                flex items-center justify-center px-4 pl-2 gap-2 py-2 rounded-md border-[1.5px] border-light-quarternary-300 dark:border-dark-primary-300
+                flex items-center justify-center gap-2 
+                px-5 pl-3 py-[6px] rounded-md 
+                border-[1.5px] border-light-quarternary-300 dark:border-dark-primary-300
                 hover:bg-info hover:text-light-secondary-200 
                 text-light-quarternary-500 dark:text-dark-quarternary-500
                 hover:border-transparent dark:hover:border-transparent

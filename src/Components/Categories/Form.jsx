@@ -240,9 +240,24 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                 bg-light-primary-500 dark:bg-dark-primary-700
                 min-h-screen
             '>
-            <div className="flex justify-between items-center w-full py-4">
+            <div className="flex gap-3 justify-between items-center w-full py-4">
+                <button
+                    onClick={() => {
+                        setIsFormOpen(false);
+                        setOpenedId(undefined);
+                    }}
+                    className="
+                        w-[40px] h-[40px] rounded-full
+                        bg-light-secondary-200 dark:bg-dark-secondary-700
+                        text-light-quarternary-500 dark:text-dark-quarternary-500
+                        transition-all duration-300
+                        hover:bg-light-secondary-500 dark:hover:bg-dark-secondary-600
+                    ">
+                    <i className="fas fa-arrow-left"></i>
+                </button>
+
                 <h1 className="
-                        text-2xl font-semibold
+                        text-2xl font-semibold mr-auto
                         text-light-quarternary-500 dark:text-dark-quarternary-500
                     ">
                     {id ? language.edit+' '+language.category : language.add+' '+language.category}
@@ -383,42 +398,47 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                                     }
                                 </div>
                             </div>
-                            <div className="flex gap-2 flex-col">
-                                <label
-                                    className="label">{ language.old +' '+ language.images +' '+ language.preview }</label>
-                                <div 
-                                    className="images-preview"
-                                >
-                                    {
-                                        oldImagesPreview?.map((img, index) => {
-                                            return (
-                                                <div 
-                                                    key={index} 
-                                                    className="
-                                                        w-full relative h-full max-w-[150px]
-                                                    ">
-                                                    <div
-                                                        onClick={() => {removeImage(img._id)}}
-                                                        className="
-                                                            flex w-[30px] h-[30px] 
-                                                            bg-white rounded-full justify-center items-center 
-                                                            absolute right-2 top-2 cursor-pointer
-                                                        ">
-                                                        <i className="fas fa-close"></i>
-                                                    </div>
-                                                    <img 
-                                                        src={import.meta.env.VITE_ASSETS + '/Images/' + img.name} 
-                                                        key={index} 
-                                                        className="
-                                                            w-[150px] h-full rounded-md object-cover
-                                                        "
-                                                    />
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </div>
+                            {
+                                id
+                                ? (
+                                    <div className="flex gap-2 flex-col">
+                                        <label
+                                            className="label">{ language.old +' '+ language.images +' '+ language.preview }</label>
+                                        <div 
+                                            className="images-preview"
+                                        >
+                                            {
+                                                oldImagesPreview?.map((img, index) => {
+                                                    return (
+                                                        <div 
+                                                            key={index} 
+                                                            className="
+                                                                w-full relative h-full max-w-[150px]
+                                                            ">
+                                                            <div
+                                                                onClick={() => {removeImage(img._id)}}
+                                                                className="
+                                                                    flex w-[30px] h-[30px] 
+                                                                    bg-white rounded-full justify-center items-center 
+                                                                    absolute right-2 top-2 cursor-pointer
+                                                                ">
+                                                                <i className="fas fa-close"></i>
+                                                            </div>
+                                                            <img 
+                                                                src={import.meta.env.VITE_ASSETS + '/Images/' + img.name} 
+                                                                key={index} 
+                                                                className="
+                                                                    w-[150px] h-full rounded-md object-cover
+                                                                "
+                                                            />
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                ) : null
+                            }
                         </div>
                     </div>
                     <button 

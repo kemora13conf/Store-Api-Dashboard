@@ -78,7 +78,7 @@ function Table(props) {
 
   };
   return (
-    <div className="w-full rounded-md overflow-y-visible overflow-x-auto gap-3">
+    <div className="w-full overflow-y-visible overflow-x-auto gap-3">
       <table className="w-full">
         <thead>
           <tr

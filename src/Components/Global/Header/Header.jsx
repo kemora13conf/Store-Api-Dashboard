@@ -58,7 +58,7 @@ function Header() {
           </div>
         </div>
       </div>
-      <Sidebar openedSidebar={openedSidebar} width={bounds.width} />
+      <Sidebar openedSidebar={openedSidebar} setOpenedSidebar={setOpenedSidebar} width={bounds.width} />
     </>
   );
 }

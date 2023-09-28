@@ -87,12 +87,12 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
 
             <h1 className="text-light-quarternary-500 text-lg font-semibold dark:text-dark-tertiary-300">{language.settings}</h1>
             <div className="flex gap-2 justify-between p-2 ">
-                <h1 className="text-light-quarternary-400 text-sm font-semibold">{ language.dark_mode }</h1>
+                <h1 className="text-light-quarternary-400 text-sm">{ language.dark_mode }</h1>
                 <Toggle toggled={theme == 'dark' ? true : false} onClick={handleClik} />
             </div>
             
             <div className="flex gap-2 justify-between px-2 items-center">
-                <h1 className="text-light-quarternary-400 text-sm font-semibold">{ language.language } </h1>
+                <h1 className="text-light-quarternary-400 text-sm ">{ language.language } </h1>
                 <SelectBox {...{
                     selected: selectedLanguage,
                     setSelected: setSelectedLanguage,

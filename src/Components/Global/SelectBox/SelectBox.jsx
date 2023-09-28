@@ -25,7 +25,14 @@ const SelectBox = (props) => {
                     {selected}
                 </div>
                 <div className="flex items-center justify-center w-fit h-fit rounded-full">
-                    <i className="fas fa-chevron-down text-sm text-light-quarternary-500 dark:text-dark-quarternary-500"></i>
+                    <i 
+                        className={`
+                            fas fa-chevron-down 
+                            text-sm text-light-quarternary-500 dark:text-dark-quarternary-500
+                            transition-all duration-300
+                            ${opened ? ' transform rotate-180' : ''}
+                        `}
+                    ></i>
                 </div>
             </div>
             <AnimatePresence mode='wait'>
@@ -43,7 +50,7 @@ const SelectBox = (props) => {
                                             onClick={() => {
                                                 setSelected(childp.props.value);
                                             }}
-                                            className={"cursor-pointer " +  child.props.className + (selected == childp.props.value ? ' selected-language' : '') }  
+                                            className={"cursor-pointer " +  child.props.className + (selected == childp.props.value ? ' selected-option' : '') }  
                                         />
                                     )
                                 })
@@ -53,7 +60,7 @@ const SelectBox = (props) => {
                                         onClick={() => {
                                             setSelected(childp.props.value);
                                         }}
-                                        className={ children.props.className + (selected == children.props.value ? ' selected-language' : '') }  
+                                        className={ children.props.className + (selected == children.props.value ? ' selected-option' : '') }  
                                     />
                                 )
                             

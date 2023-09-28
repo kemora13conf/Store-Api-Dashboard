@@ -7,6 +7,9 @@ import SearchForm from "./SearchForm";
 import Footer from "./Footer";
 import { AnimatePresence } from "framer-motion";
 import Form from "./Form";
+import SelectBox from "../Global/SelectBox/SelectBox";
+import Menu from "../Global/SelectBox/Menu";
+import Option from "../Global/SelectBox/Option";
 
 function Categories() {
   const {
@@ -16,7 +19,8 @@ function Categories() {
     language,
     selectedLanguage,
     setReqFinished,
-  } = useContext(AppContext);
+  } = useContext(AppContext); // global context api
+
   const [data, setData] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
@@ -28,10 +32,10 @@ function Categories() {
 
   // Search
   const [search, setSearch] = useState("");
-  const [searchBy, setSearchBy] = useState(language.all)
+  const [searchBy, setSearchBy] = useState('All');
 
   // Order
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('Name');
 
   // pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +66,7 @@ function Categories() {
       setReqFinished(true);
       setLoading(false);
     });
-  }, [currentPage, itemsPerPage, search, reload]);
+  }, [currentPage, itemsPerPage, search, orderBy, reload]);
 
   useEffect(() => {
     if (formRef.current) {
@@ -81,7 +85,13 @@ function Categories() {
   }, [openedId, isFormOpen]);
   return (
     <>
-      <div className="bg-light-primary-500 dark:bg-dark-primary-500 p-4 rounded-md shadow flex flex-col">
+      <div 
+        className="
+          bg-light-primary-500 dark:bg-dark-primary-500 
+          rounded-md shadow 
+          flex flex-col
+        "
+      >
         <Header
           {...{
             checkedItems,
@@ -92,17 +102,71 @@ function Categories() {
           }}
         />
         <div className="w-full mx-auto">
-          <div className="flex py-3">
-            <SearchForm
-              {...{
-                search,
-                setSearch,
-                searchBy,
-                setSearchBy,
-              }}
-            />
+          <div className="w-full @container/tableFilters">
+            <div 
+              className="
+                flex p-3 gap-3 items-center justify-center flex-col 
+                @[400px]/tableFilters:flex-row
+              "
+            >
+              <div 
+                className="
+                  flex gap-2 justify-between items-center
+                  max-w-fit w-full @[400px]/tableFilters:w-fit h-fit 
+                  p-0 pl-2  
+                  border border-light-secondary-500 dark:border-dark-secondary-600 rounded-md
+                  text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm
+                  bg-light-secondary-500 dark:bg-dark-secondary-600
+                "
+              >
+                <p className="whitespace-nowrap">
+                  { language.order_by }
+                </p>
+
+                <SelectBox
+                    {...{
+                        selected: orderBy,
+                        setSelected: setOrderBy,
+                        className: "max-w-fit !rounded-md text-sm",
+                    }}
+                >
+                  <Menu
+                      className={
+                          ` flex flex-col gap-2 py-2 px-2 
+                          absolute top-[calc(100%+10px)] right-0 md:left-0 z-index-[2000]
+                          bg-light-primary-500 dark:bg-dark-primary-500 rounded-md shadow-lg dark:shadow-dark
+                          w-full min-w-fit h-auto 
+                          border border-light-secondary-500 dark:border-dark-secondary-600`
+                      }
+                  >
+                    <Option value={ 'Name' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.name }
+                            </h1>
+                        </div>
+                    </Option>   
+                    <Option value={ 'Description' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.description }
+                            </h1>
+                        </div>
+                    </Option>
+                  </Menu>
+                </SelectBox>
+              </div>
+              <SearchForm
+                {...{
+                  search,
+                  setSearch,
+                  searchBy,
+                  setSearchBy,
+                }}
+              />
+            </div>
           </div>
-          <div className="w-full flex flex-col rounded-md shadow-light dark:shadow-dark">
+          <div className="w-full flex flex-col rounded-md dark:shadow-dark">
             <Table
               {...{
                 data,

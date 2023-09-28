@@ -12,40 +12,44 @@ function SearchForm(props) {
     return (
         <form 
             onSubmit={handleSubmit}
-            className='flex gap-3 ml-auto'
+            className='
+                flex items-center @[400px]/tableFilters:ml-auto rounded-md
+                max-w-[300px]
+                border border-light-secondary-500 dark:border-dark-secondary-600
+            '
         >
             <SelectBox
                 {...{
                     selected: searchBy,
                     setSelected: setSearchBy,
-                    className: "border border-light-secondary-500 dark:border-dark-secondary-600 max-w-fit !rounded-md",
+                    className: "max-w-fit !rounded-md text-sm",
                 }}
             >
                 <Menu 
                     className={
                         ` flex flex-col gap-2 py-2 px-2 
-                        absolute top-[calc(100%+10px)] right-0 z-index-[2000]
+                        absolute top-[calc(100%+10px)] left-0 md:right-0 z-index-[2000]
                         bg-light-primary-500 dark:bg-dark-primary-500 rounded-md shadow-lg dark:shadow-dark
                         w-full min-w-fit h-auto 
                         border border-light-secondary-500 dark:border-dark-secondary-600`
                     }
                 >
                     
-                    <Option value={ 'all' }>
+                    <Option value={ 'All' }>
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                             <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
                             { language.all }
                             </h1>
                         </div>
                     </Option> 
-                    <Option value={ 'name' }>
+                    <Option value={ 'Name' }>
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                             <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
                             { language.name }
                             </h1>
                         </div>
                     </Option>   
-                    <Option value={ 'description' }>
+                    <Option value={ 'Description' }>
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                             <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
                             { language.description }
@@ -61,8 +65,8 @@ function SearchForm(props) {
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     className="
-                        w-full max-w-[250px] h-[40px] rounded-md px-4 py-2 pr-[40px] outline-none bg-transparent
-                        border border-light-secondary-500 dark:border-dark-secondary-600
+                        w-full h-[40px] px-4 py-2 pr-[40px] outline-none bg-transparent
+                        border-l border-light-secondary-500 dark:border-dark-secondary-600
                         text-sm text-light-quarternary-500 
                         dark:text-dark-quarternary-500
                         transition-all duration-300

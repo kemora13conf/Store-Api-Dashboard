@@ -3,6 +3,7 @@ import SelectBox from "../Global/SelectBox/SelectBox";
 import Option from "../Global/SelectBox/Option";
 import { AppContext } from "../../App";
 import Menu from "../Global/SelectBox/Menu";
+import useMeasure from "react-use-measure";
 
 function Footer(props) {
   const {
@@ -13,22 +14,24 @@ function Footer(props) {
     totalPages,
   } = props;
   const { language } = useContext(AppContext);
+  const [ref, bounds] = useMeasure();
 
   return (
     <div
+      ref={ref}
       className="
             w-full rounded-b-md
             bg-light-secondary-500 dark:bg-dark-primary-700 
         "
     >
-      <div className="w-full px-4 py-2 flex gap-4 flex-wrap justify-center">
+      <div className="w-full px-2 md:px-4 py-2 flex gap-2 md:gap-4 justify-center items-center flex-row">
         {/* Items per pages */}
-        <div className="w-full max-h-fit mb-auto max-w-[100px]">
+        <div className="w-fit max-h-fit mb-auto max-w-[100px]">
           <SelectBox
             {...{
               selected: itemsPerPage,
               setSelected: setItemsPerPage,
-              className: "border border-light-secondary-600 dark:border-dark-secondary-600 !rounded-md",
+              className: "border border-light-secondary-600 dark:border-dark-secondary-600 !py-[6px] !rounded-md",
 
             }}
           >
@@ -76,24 +79,35 @@ function Footer(props) {
         <div className="
                 flex items-center justify-center w-fit max-w-fit rounded-md 
                 text-light-quarternary-500 dark:text-dark-quarternary-500 text 
-                md:mr-auto
+                mr-auto
               ">
-          <div className="flex gap-1 justify-center">
-            <div>
-              { language.showing }
-            </div> 
-            <div className="font-bold">
-              { currentPage } {' '}
-            </div>
-            <div>
-              { language.result +' '+ language.of }
-            </div>
-            <div className="font-bold">
-              { totalPages }
-            </div>
-            <div>
-              { language.results }
-            </div>
+          <div className="flex gap-1 justify-center text-sm">
+            {
+              bounds.width > 425
+              ? (
+                <>
+                  <div>
+                  { language.showing }
+                  </div> 
+                  <div className="font-bold">
+                    { currentPage } {' '}
+                  </div>
+                  <div>
+                    { language.result +' '+ language.of }
+                  </div>
+                  <div className="font-bold">
+                    { totalPages }
+                  </div>
+                  <div>
+                    { language.results }
+                  </div>
+                </>
+              ) : (
+                <div>
+                  { language.showing +' '+ currentPage +' / '+ totalPages }
+                </div>
+              )
+            }
           </div>
         </div>
 

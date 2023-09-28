@@ -2,7 +2,6 @@ body{
     @apply bg-light-secondary-100 dark:bg-dark-primary-600 scroll-smooth ;
 }
 
-
 .label{
     @apply text-sm font-semibold text-light-quarternary-500 dark:text-dark-primary-200 pl-1
 }
