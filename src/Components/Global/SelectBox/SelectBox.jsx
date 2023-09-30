@@ -8,6 +8,7 @@ const SelectBox = (props) => {
     const selected = props.selected;
     const setSelected = props.setSelected;
     const className = props.className;
+    const parentClassName = props.parentClassName;
 
     const [opened, setOpened] = useState(false);
     return (
@@ -15,7 +16,9 @@ const SelectBox = (props) => {
             onClick={() => {
                 setOpened(prv => !prv);
             }} 
-            className={"w-fit relative max-h-fit"} >
+            className={`
+                w-fit relative max-h-fit ${parentClassName ? parentClassName : ''}
+            `} >
             <div className={`
                     flex items-center gap-4 bg-light-primary-500 dark:bg-dark-primary-500 rounded-xl py-2 px-3 justify-between cursor-pointer 
                     ${className ? className : ''}

@@ -16,6 +16,7 @@ body{
             focus:bg-light-secondary-200 dark:focus:bg-dark-primary-500 
             transition-all duration-300 outline-none 
 }
+
 .error{
     @apply text-xs text-error
 }

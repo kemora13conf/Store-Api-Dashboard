@@ -1,148 +1,233 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../App';
-import Fetch from '../utils';
-import { Toggle } from '../Global/ToggleBtn/Toggle';
-import { motion, AnimatePresence } from 'framer-motion';
-import MyLink from '../Global/MyLink';
-import Alert from '../Global/Popups/PopupsContainer';
-import { toast } from 'react-toastify';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { AppContext } from "../../App";
+import Fetch from "../utils";
+import Header from "./Header";
+import Table from "./Table";
+import SearchForm from "./SearchForm";
+import Footer from "./Footer";
+import { AnimatePresence } from "framer-motion";
+import Form from "./Form";
+import SelectBox from "../Global/SelectBox/SelectBox";
+import Menu from "../Global/SelectBox/Menu";
+import Option from "../Global/SelectBox/Option";
 
+function Categories() {
+  const {
+    setActiveTab,
+    setLoaded,
+    reqFinished,
+    language,
+    selectedLanguage,
+    setReqFinished,
+  } = useContext(AppContext); // global context api
 
-function Products() {
-    const { setActiveTab, setLoaded, reqFinished, setReqFinished, language, selectedLanguage } = useContext(AppContext);
-    const [ products, setProducts ] = useState([]);
+  const [data, setData] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [checkAll, setCheckAll] = useState(false);
+  const [reload, setReload] = useState(false);
 
-    const changeState = (state, id) => {
-      Fetch(import.meta.env.VITE_API+'/products/change-state-product/'+id, 'PUT', { state })
-      .then(res => {
-        setProducts(prv => {
-          return prv.map(category => {
-            if(category._id === id) {
-              return {
-                ...category,
-                enabled: state
-              }
-            }
-            return category;
-          })
-        })
-      })
+  // edit and creation form
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [openedId, setOpenedId] = useState(null);
+
+  // Search
+  const [search, setSearch] = useState("");
+  const [searchBy, setSearchBy] = useState('All');
+
+  // Order
+  const [orderBy, setOrderBy] = useState('Name');
+
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  // form ref
+  const formRef = useRef();
+
+  useEffect(() => {
+    setActiveTab(language.products);
+    setLoaded(true);
+  }, [reqFinished, selectedLanguage]);
+
+  useEffect(() => {
+    setLoading(true);
+    Fetch(
+      `${
+        import.meta.env.VITE_API
+      }/products?search=${search}&searchby=${searchBy}&orderby=${orderBy}&page=${currentPage}&limit=${itemsPerPage}`,
+      "GET"
+    ).then((res) => {
+      setData(res.data.products);
+      setTotalItems(res.data.total);
+      setTotalPages(res.data.pages);
+      setReqFinished(true);
+      setLoading(false);
+    });
+  }, [currentPage, itemsPerPage, search, orderBy, reload]);
+
+  useEffect(() => {
+    if (formRef.current) {
+      function formRefClickHandler(e) {
+        if (e.target === formRef.current) {
+          setIsFormOpen(false);
+        }
+      }
+      formRef.current.addEventListener("click", formRefClickHandler);
+      return () => {
+        if (formRef.current) {
+          formRef.current.removeEventListener("click", formRefClickHandler);
+        }
+      };
     }
-
-    const deleteCategory = async (id) => {
-      Alert({
-          title: "Are you sure you want to delete this category ?",
-          message: "You won't be able to revert this!",
-          icon: "warning",
-          buttons: [
-              {
-                  text: "Yes, delete it!",
-                  type: 'primary' 
-              },
-              {
-                  text: "Cancel",
-                  type: 'secondary'
-              }
-          ],
-          close: async (closeAlert) => {
-              await new Promise((resolve) => {
-                  Fetch(import.meta.env.VITE_API+'/products/delete-category/'+id, 'DELETE')
-                  .then(res => {
-                      if(res.type == 'success') {
-                          toast.success("Category deleted successfully");
-                          setProducts(prv => prv.filter(category => category._id !== id));
-                      } else {
-                          toast.error(res.message);
-                      }
-                      resolve();
-                  })
-                  .catch(err => {
-                      toast.error("Something went wrong");
-                      resolve();
-                  })
-                  closeAlert();
-              })
-          }
-      })
-  }
-
-
-    useEffect(() => {
-        Fetch(import.meta.env.VITE_API+'/products', 'GET')
-        .then(res => {
-          setProducts(res.data);
-          setReqFinished(prv => true);
-        })
-    },[]);
-    useEffect(() => {
-      setActiveTab(language.products);
-      setLoaded(true);
-    }, [reqFinished, selectedLanguage]);
-
+  }, [openedId, isFormOpen]);
   return (
-    <div>
-      <div className="flex justify-between items-center w-full px-4 py-4">
-        <h1 className="w-full text-light-primary-500dark-soft text-xl font-medium">
-          {language.products}
-        </h1>
-        <MyLink to='create' className="flex w-full max-w-fit  justify-center items-center gap-2 px-4 py-2 bg-tertiary rounded-md shadow-md text-white font-semibold transition-all duration-300 hover:bg-secondary">
-          <i className="fas fa-plus"></i>
-          <p className=''>new product</p>
-        </MyLink>
-      </div>
+    <>
+      <div 
+        className="
+          bg-light-primary-500 dark:bg-dark-primary-500 
+          rounded-md shadow 
+          flex flex-col
+        "
+      >
+        <Header
+          {...{
+            checkedItems,
+            setCheckedItems,
+            setIsFormOpen,
+            setOpenedId,
+            setReload,
+          }}
+        />
+        <div className="w-full mx-auto">
+          <div className="w-full @container/tableFilters">
+            <div 
+              className="
+                flex p-3 gap-3 items-center justify-center flex-col 
+                @[400px]/tableFilters:flex-row
+              "
+            >
+              <div 
+                className="
+                  flex gap-2 justify-between items-center
+                  max-w-fit w-full @[400px]/tableFilters:w-fit h-fit 
+                  p-0 pl-2  
+                  border border-light-secondary-500 dark:border-dark-secondary-600 rounded-md
+                  text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm
+                  bg-light-secondary-500 dark:bg-dark-secondary-600
+                "
+              >
+                <p className="whitespace-nowrap">
+                  { language.order_by }
+                </p>
 
-      <div className="w-full max-w-[1000px] mx-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="text-sm font-semibold text-gray-800">
-              <th className="px-4 py-3 text-left">Name</th>
-              <th className="px-4 py-3 text-left">Status</th>
-              <th className="px-4 py-3 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="text-sm font-medium text-gray-700">
-            <AnimatePresence>
-              {
-                products?.map((category, index) =>{
-                  return (
-                    <motion.tr
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3 }}
-                      exit={{ opacity: 0, y: -20}}
-                      key={index} className="border-b border-gray-200 hover:bg-gray-100 overflow-hidden">
-                      <td className="px-4 py-3">{category.name}</td>
-                      <td className="px-4 py-3">
-                        <span className={`px-2 py-1 text-xs font-semibold ${category.enabled ? 'text-green-600' : 'bg-red-600'} bg-green-200 rounded-full`}>
-                          { category.enabled ? 'Enabled' : 'Disabled' }
-                        </span>
-                      </td>
-                      <td className="px-4 py-3">
-                        <div className="w-full h-auto relative flex gap-2">
-                          <Toggle
-                            toggled={category.enabled}
-                            onClick={(state) => changeState(state, category._id)}
-                          />
-                          <MyLink to={`${category._id}/update`} className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-light-primary-500light text-light-primary-500dark-soft hover:bg-light-primary-500dark-soft hover:text-light-primary-500light transition-all duration-300">
-                            <i className="fas fa-pen"></i>
-                          </MyLink >
-                          <button
-                            onClick={() => {deleteCategory(category._id)}} 
-                            className="shadow w-8 h-8 flex justify-center items-center rounded-full bg-red-600 text-white hover:bg-red-700 transition-all duration-300">
-                            <i className="fas fa-trash"></i>
-                          </button>
+                <SelectBox
+                    {...{
+                        selected: orderBy,
+                        setSelected: setOrderBy,
+                        className: "max-w-fit !rounded-md text-sm",
+                    }}
+                >
+                  <Menu
+                      className={
+                          ` flex flex-col gap-2 py-2 px-2 
+                          absolute top-[calc(100%+10px)] right-0 md:left-0 z-index-[2000]
+                          bg-light-primary-500 dark:bg-dark-primary-500 rounded-md shadow-lg dark:shadow-dark
+                          w-full min-w-fit h-auto 
+                          border border-light-secondary-500 dark:border-dark-secondary-600`
+                      }
+                  >
+                    <Option value={ 'Name' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.name }
+                            </h1>
                         </div>
-                      </td>
-                    </motion.tr>
-                  )
-                })
-              }
-            </AnimatePresence>
-          </tbody>
-        </table>
+                    </Option>
+                    <Option value={ 'Price' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.price }
+                            </h1>
+                        </div>
+                    </Option>
+                    <Option value={ 'Quantity' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.quantity }
+                            </h1>
+                        </div>
+                    </Option>
+                  </Menu>
+                </SelectBox>
+              </div>
+              <SearchForm
+                {...{
+                  search,
+                  setSearch,
+                  searchBy,
+                  setSearchBy,
+                }}
+              />
+            </div>
+          </div>
+          <div className="w-full flex flex-col rounded-md dark:shadow-dark">
+            <Table
+              {...{
+                data,
+                setData,
+                checkedItems,
+                setCheckedItems,
+                checkAll,
+                setCheckAll,
+                setOpenedId,
+                setIsFormOpen,
+              }}
+            />
+            <Footer
+              {...{
+                currentPage,
+                setCurrentPage,
+                itemsPerPage,
+                setItemsPerPage,
+                totalItems,
+                setTotalItems,
+                totalPages,
+                setTotalPages,
+                loading,
+                setLoading,
+              }}
+            />
+          </div>
+        </div>
       </div>
-    </div>
-  )
+      <AnimatePresence mode="wait">
+        {isFormOpen && (
+          <div
+            ref={formRef}
+            className={`
+                fixed top-0 left-0 z-[2000] w-full min-h-screen max-h-screen
+                flex items-start justify-end overflow-hidden overflow-y-auto scroll-smooth
+                ${
+                  isFormOpen
+                    ? "bg-light-quarternary-500 bg-opacity-20 backdrop-blur-[5px]"
+                    : "bg-transparent"
+                }
+              `}
+          >
+            <Form
+              id={openedId}
+              setReload={setReload}
+              setIsFormOpen={setIsFormOpen}
+              setOpenedId={setOpenedId}
+            />
+          </div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }
 
-export default Products
+export default Categories;

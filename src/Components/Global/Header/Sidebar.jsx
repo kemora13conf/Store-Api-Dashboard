@@ -54,8 +54,12 @@ function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
     <div
       ref={ref}
       className={`
-        w-full left-0 fixed z-50 top-[66px] min-h-[calc(100vh-66px)]
-        ${openedSidebar ? "bg-black bg-opacity-25" : "min-h-0 max-h-0"}
+        w-full left-0 fixed z-50 top-[66px]
+        ${ 
+          width < 767
+            ? openedSidebar ? "min-h-[calc(100vh-66px)] bg-black bg-opacity-25" : "min-h-0 max-h-0"
+            : 'min-h-0 max-h-0'
+          }
       `}>
       <div
         className={`flex flex-col left-0 fixed z-50 top-[66px] ${

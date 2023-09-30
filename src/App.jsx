@@ -11,9 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./Components/Home/Home";
 import Categories from "./Components/Categories/Categories";
 import Products from "./Components/Products/Products";
-import CategoryForm from "./Components/Categories/Form";
-import ProductForm from "./Components/Products/ProductForm";
-import ConfirmProvider from "./Components/Global/Popups/PopupsContainer";
 import PopupsProvider from "./Components/Global/Popups/PopupsContainer";
 
 const AppContext = createContext();
