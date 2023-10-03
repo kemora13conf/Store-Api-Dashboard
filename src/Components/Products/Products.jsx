@@ -10,6 +10,7 @@ import Form from "./Form";
 import SelectBox from "../Global/SelectBox/SelectBox";
 import Menu from "../Global/SelectBox/Menu";
 import Option from "../Global/SelectBox/Option";
+import { motion } from 'framer-motion'
 
 function Categories() {
   const {
@@ -84,7 +85,12 @@ function Categories() {
     }
   }, [openedId, isFormOpen]);
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0.4, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0.4, y: -50 }}
+      key={'products'}
+    >
       <div 
         className="
           bg-light-primary-500 dark:bg-dark-primary-500 
@@ -226,7 +232,7 @@ function Categories() {
           </div>
         )}
       </AnimatePresence>
-    </>
+    </motion.div>
   );
 }
 

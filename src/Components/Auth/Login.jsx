@@ -1,17 +1,19 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AppContext } from "../../App";
 import { nanoid } from "nanoid";
 
 export default function Login() {
-  const { setIsAuth, setCurrentUser, setLoaded, setTheme, setSelectedLanguage } = useContext(AppContext);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [errors, setErrors] = React.useState({});
+  const { setIsAuth, setCurrentUser, setLoaded, setTheme, theme, setSelectedLanguage, language } = useContext(AppContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true)
     fetch(`${import.meta.env.VITE_API}/auth/signin`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -22,11 +24,14 @@ export default function Login() {
         if (res.type == "success") {  
           setErrors({});
           localStorage.setItem("jwt", res.data.token);
-          toast.success(res.message);
+          setLoading(false)
           setCurrentUser(res.data.client);
           setTheme(res.data.client.theme)
           setSelectedLanguage(res.data.client.language)
           setIsAuth(true);
+          toast.success(res.message, {
+            theme: res.data.client.theme
+          });
         } else {
           setErrors({ [res.type]: res.message });
         }
@@ -40,88 +45,98 @@ export default function Login() {
       initial={{ opacity: 0.4, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0.4, y: -50 }}
+      key={'login'}
       transition={{ duration: 0.3 }}
-      className="relative flex flex-col justify-center min-h-screen px-4 md:px-0"
+      className="
+        relative 
+        flex flex-col justify-center items-center
+        min-h-screen px-4 md:px-0 bg-light-secondary-200"
     >
-      <div className="w-full max-w-[400px] p-6 md:px-12 m-auto bg-white rounded-md shadow-xl shadow-rose-600/40 ring ring-tertiary lg:max-w-xl">
-        <img
-          src={`${import.meta.env.VITE_ASSETS}/logo/logo.png`}
-          className="max-h-[150px] mx-auto"
-        />
-        <h1 className="text-3xl font-semibold text-center text-secondary uppercase ">
-          Login
-        </h1>
-        <form onSubmit={handleSubmit} className="my-6">
-          <div className="mb-2">
-            <label
-              for="email"
-              className="block text-sm font-semibold text-gray-800"
-            >
-              Email
-            </label>
-            <div className="w-full relative flex items-center mt-2">
-              <i className="absolute left-3 w-fit right-3 text-gray-400 fas fa-envelope"></i>
-              <input
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+      <form onSubmit={handleSubmit}
+        className="
+          flex flex-col gap-3 justify-start items-center
+          w-full max-w-[300px] min-h-[250px] px-5 py-3
+          bg-light-primary-500
+          rounded-md
+          shadow-light 
+        "
+      >
+        <div className="font-bold text-2xl text-light-quarternary-500 mb-3">
+          {
+            language.login != undefined 
+            ? language.login
+            : 'Login'
+          }
+        </div>
+        
+        <div className="w-full flex flex-col gap-2">
+            <label 
+                htmlFor="email" 
+                className="label">
+                  { 
+                    language.email != undefined
+                    ? language.email
+                    : 'Email'
+                  }
+                </label>
+            <input
+                name="email"
+                id="email"
                 type="email"
-                className="w-full px-4 py-2 pl-9 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
-            </div>
-            <AnimatePresence>
-              {errors.email && (
-                <motion.p
-                  key={nanoid()}
-                  initial={{ opacity: 0.4, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0.4, y: 10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-sm text-red-500"
-                >
-                  {errors.email}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
-          <div className="mb-2">
-            <label
-              for="password"
-              className="block text-sm font-semibold text-gray-800"
-            >
-              Password
-            </label>
-            <div className="w-full relative flex items-center mt-2">
-              <i className="absolute left-3 w-fit right-3 text-gray-400 fas fa-lock"></i>
-              <input
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+                className={`input ${errors.email ? '!border-error' : ''}`}
+            />
+            {
+                errors.email && (
+                    <p className="error">{errors.email}</p>
+                )
+            }
+        </div>
+        <div className="w-full flex flex-col gap-2">
+            <label 
+                htmlFor="password" 
+                className="label">
+                  { 
+                    language.password != undefined
+                    ? language.password
+                    : 'Password'
+                  }
+                </label>
+            <input
+                name="password"
+                id="password"
                 type="password"
-                className="w-full px-4 py-2 pl-9 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
-              />
-            </div>
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
+                className={`input ${errors.password ? '!border-error' : ''}`}
+            />
+            {
+                errors.password && (
+                    <p className="error">{errors.password}</p>
+                )
+            }
+        </div>
 
-            <AnimatePresence>
-              {errors.password && (
-                <motion.p
-                  key={nanoid()}
-                  initial={{ opacity: 0.4, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0.4, y: 10 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-sm text-red-500"
-                >
-                  {errors.password}
-                </motion.p>
-              )}
-            </AnimatePresence>
-          </div>
-          <div className="mt-6">
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-quaternary rounded-md hover:bg-light-primary-500dark-soft focus:outline-none focus:bg-light-primary-500dark-soft">
-              Login
-            </button>
-          </div>
-        </form>
-      </div>
+        <button 
+            type="submit" 
+            className="
+                submit-btn my-2 w-full
+            ">
+            {
+                loading ? (
+                    <i className="fas fa-spinner fa-spin"></i>
+                ) : null
+            }
+            <p className='w-full'>
+              {
+                language.login != undefined 
+                ? language.login
+                : 'Login'
+              }
+            </p>
+        </button>
+      </form>
     </motion.div>
   );
 }

@@ -137,7 +137,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     setLoading(false);
                     return;
                 }
-                toast.success("Category updated successfully", { theme: theme });
+                toast.success(res.message, { theme: theme });
                 setData(res.data)
                 setLoading(false);
                 setReload(prv => !prv);

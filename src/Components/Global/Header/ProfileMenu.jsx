@@ -14,6 +14,7 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
         localStorage.removeItem("jwt");
         setIsAuth(false);
         setCurrentUser({});
+        location.replace('/login')
       };
     const handleClik = (toggled) => {
         console.log(toggled)

@@ -17,12 +17,12 @@ function Header({
   const { setConfirm } = useContext(PopupsContext);
   const deleteMany = () => {
     setConfirm({
-      title: language.delete +' '+ language.categories,
+      title: language.delete +' '+ language.products,
       message: language.multiple_delete_msg,
       confirmText: language.confirm_delete,
       cancelText: language.cancel_delete,
       confirm: (close) => {
-        Fetch(`${import.meta.env.VITE_API}/categories/delete-multiple`, "DELETE", { ids: checkedItems })
+        Fetch(`${import.meta.env.VITE_API}/products/delete-multiple`, "DELETE", { ids: checkedItems })
         .then((res) => {
           if (res.type === "success") {
             setReload(prv => !prv)
