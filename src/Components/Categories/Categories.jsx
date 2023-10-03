@@ -5,7 +5,7 @@ import Header from "./Header";
 import Table from "./Table";
 import SearchForm from "./SearchForm";
 import Footer from "./Footer";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Form from "./Form";
 import SelectBox from "../Global/SelectBox/SelectBox";
 import Menu from "../Global/SelectBox/Menu";
@@ -84,7 +84,12 @@ function Categories() {
     }
   }, [openedId, isFormOpen]);
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0.4, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0.4, y: -50 }}
+      key={'products'}
+    >
       <div 
         className="
           bg-light-primary-500 dark:bg-dark-primary-500 
@@ -219,7 +224,7 @@ function Categories() {
           </div>
         )}
       </AnimatePresence>
-    </>
+    </motion.div>
   );
 }
 

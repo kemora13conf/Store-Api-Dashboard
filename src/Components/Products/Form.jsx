@@ -108,14 +108,11 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             formData.append("images", images[i]);
         }
         if(id) {
-            fetch(import.meta.env.VITE_API+'/products/update/'+id, {
-                method: "PUT",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-                },
-                body: formData
-            })
-            .then(res => res.json())
+            Fetch(
+                import.meta.env.VITE_API+'/products/update/'+id,
+                "PUT",
+                formData
+            )
             .then(res => {
                 setErrors(prv => {
                     return {
@@ -151,14 +148,11 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                 setLoading(false);
             })
         } else {
-            fetch(import.meta.env.VITE_API+'/products/create', {
-                method: "POST",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-                },
-                body: formData,
-            })
-            .then(res => res.json())
+            Fetch(
+                import.meta.env.VITE_API+'/products/create',
+                "POST",
+                formData
+            )
             .then(res => {
                 setErrors(prv => {
                     return {

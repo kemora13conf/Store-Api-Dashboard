@@ -26,22 +26,32 @@ function Table(props) {
     Fetch(
       import.meta.env.VITE_API + "/products/change-state/" + id,
       "PUT",
-      { state }
+      JSON.stringify({ state }),
+      { "Content-Type": "application/json" }
     ).then((res) => {
       setData((prv) => {
         return prv.map((category) => {
           if (category._id === id) {
             return {
               ...category,
-              enabled: state,
+              enabled: res.data.enabled,
             };
           }
           return category;
         });
       });
+      // toast
+      if(res.type === 'success'){
+        toast.success(res.message, {
+          theme: theme,
+        });
+      }else{
+        toast.error(res.message, {
+          theme: theme,
+        });
+      }
     });
   };
-
   const editItem = (id) => {
     setOpenedId(id);
     setIsFormOpen(true);

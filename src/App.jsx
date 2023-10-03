@@ -12,6 +12,8 @@ import Home from "./Components/Home/Home";
 import Categories from "./Components/Categories/Categories";
 import Products from "./Components/Products/Products";
 import PopupsProvider from "./Components/Global/Popups/PopupsContainer";
+import './ScrollBarStyles/scrollbar.css'
+import Fetch from "./Components/utils";
 
 const AppContext = createContext();
 const AppProvider = ({ children }) => {
@@ -73,8 +75,10 @@ const AppProvider = ({ children }) => {
 
   const configLanguage = () => {
       localStorage.setItem('language', selectedLanguage)
-      fetch(`${import.meta.env.VITE_ASSETS}/Languages/${selectedLanguage}/default.json`)
-      .then(res => res.json())
+      Fetch(
+        `${import.meta.env.VITE_ASSETS}/Languages/${selectedLanguage}/default.json`,
+        'GET'
+      )
       .then(res => {
         setLanguage(res)
         localStorage.setItem('languageObj', JSON.stringify(res))
@@ -83,50 +87,41 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     let language = localStorage.getItem('language')
-    localStorage.removeItem('languageObj')
-    if( language != null) {
-      if (selectedLanguage != language) {
-        configLanguage();
-      }else{
-        if(localStorage.getItem('languageObj')) {
-          setLanguage(JSON.parse(localStorage.getItem('languageObj')))
-        }else{
-          configLanguage();
-        }
-      }
-    } else {
+    if (selectedLanguage != language) {
       configLanguage();
-    }    
+    }else{
+      if(localStorage.getItem('languageObj')) {
+        setLanguage(JSON.parse(localStorage.getItem('languageObj')))
+      }else{
+        configLanguage();
+      }
+    } 
   }, [selectedLanguage])
 
   useLayoutEffect(() => {
-    let randomId = Math.random().toString(36).substring(7);
     if (theme == 'dark') {
       document.documentElement.classList.add('dark')
-      /* @vite-ignore */ 
-      import('./ScrollBarStyles/darkScrollbar.css?v='+randomId)
     } else {
       document.documentElement.classList.remove('dark')
-      import('./ScrollBarStyles/lightScrollbar.css?v='+randomId)
     }
   }, [theme])
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API}/clients/update-language`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        },
-        body: JSON.stringify({ language: selectedLanguage })
-    }).then(res => res.json())
-    .then(res => {
-        if (res.type == 'success') {
-            setSelectedLanguage(res.data)
-        }
+    if(currentUser.language != undefined){
+      Fetch(
+        `${import.meta.env.VITE_API}/clients/update-language`,
+        'PUT',
+        JSON.stringify({ language: selectedLanguage }),
+        {'Content-Type': 'application/json'}
+      )
+      .then(res => {
+          if (res.type == 'success') {
+              setSelectedLanguage(res.data)
+          }
+      }
+      ).catch(err => {
+          console.error(err)
+      })
     }
-    ).catch(err => {
-        console.error(err)
-    })
   }, [selectedLanguage])
   return (
     <AppContext.Provider value={stateStore}>{children}</AppContext.Provider>

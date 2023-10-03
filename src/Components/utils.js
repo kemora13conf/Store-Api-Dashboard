@@ -1,53 +1,61 @@
-const Fetch = async (url, method, body, content_type='application/json') => {
+const Fetch = async (url, method, body, headers) => {
     let response;
+    const language = localStorage.getItem('language') || 'English';
+    const defaultHeaders = {
+        'Authorization': 'Bearer ' + localStorage.getItem('jwt'),
+        'Lang': language 
+    };
     switch (method) {
         case 'GET':
             response = await fetch(url, {
                 method,
                 headers: {
-                    'Content-Type': content_type,
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-        
+                    ...headers,
+                    ...defaultHeaders
                 },
             });
             break;
         case 'POST':
             response = await fetch(url, {
                 method,
-                body: JSON.stringify(body),
+                body: body,
                 headers: {
-                    'Content-Type': content_type,
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                    ...headers,
+                    ...defaultHeaders
                 },
             });
             break;
         case 'PUT':
             response = await fetch(url, {
                 method,
-                body: JSON.stringify(body),
+                body: body,
                 headers: {
-                    'Content-Type': content_type,
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                    ...headers,
+                    ...defaultHeaders
                 },
             });
             break;
         case 'DELETE':
             response = await fetch(url, {
                 method,
-                body: JSON.stringify(body),
+                body: body,
                 headers: {
-                    'Content-Type': content_type,
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                    ...headers,
+                    ...defaultHeaders
                 },
             });
+            console.log({
+                    ...headers,
+                    ...defaultHeaders
+                },);
             break;
         default:
             response = await fetch(url, {
                 method,
-                body: JSON.stringify(body),
+                body: body,
                 headers: {
-                    'Content-Type': content_type,
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+                    ...headers,
+                    ...defaultHeaders
                 },
             });
             break;

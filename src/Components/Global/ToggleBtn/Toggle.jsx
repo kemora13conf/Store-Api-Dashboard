@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 export const Toggle = ({ toggled, onClick }) => {
-  const [isToggled, toggle] = useState(toggled);
+  const [isToggled, toggle] = useState(false);
 
   const callback = () => {
-    toggle(!isToggled);
+    toggle(toggled);
     onClick(!isToggled);
   };
+  useEffect(() => {
+    toggle(toggled);
+  }, [toggled]);
 
   return (
     <label className="cursor-pointer">

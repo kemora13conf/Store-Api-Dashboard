@@ -22,7 +22,12 @@ function Header({
       confirmText: language.confirm_delete,
       cancelText: language.cancel_delete,
       confirm: (close) => {
-        Fetch(`${import.meta.env.VITE_API}/products/delete-multiple`, "DELETE", { ids: checkedItems })
+        Fetch(
+          `${import.meta.env.VITE_API}/products/delete-multiple`, 
+          "DELETE", 
+          JSON.stringify({ ids: checkedItems }), 
+          { "Content-Type": "application/json" }
+        )
         .then((res) => {
           if (res.type === "success") {
             setReload(prv => !prv)

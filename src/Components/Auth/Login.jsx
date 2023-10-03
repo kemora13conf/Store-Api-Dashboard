@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AppContext } from "../../App";
 import { nanoid } from "nanoid";
+import Fetch from "../utils";
 
 export default function Login() {
   const { setIsAuth, setCurrentUser, setLoaded, setTheme, theme, setSelectedLanguage, language } = useContext(AppContext);
@@ -14,12 +15,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true)
-    fetch(`${import.meta.env.VITE_API}/auth/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    })
-      .then((res) => res.json())
+    Fetch(`${import.meta.env.VITE_API}/auth/signin`, "POST", JSON.stringify({ email, password }), { "Content-Type": "application/json" })
       .then((res) => {
         if (res.type == "success") {  
           setErrors({});

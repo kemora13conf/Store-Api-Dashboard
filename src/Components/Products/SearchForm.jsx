@@ -49,6 +49,13 @@ function SearchForm(props) {
                             </h1>
                         </div>
                     </Option> 
+                    <Option value={ 'Category' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.category }
+                            </h1>
+                        </div>
+                    </Option> 
                     <Option value={ 'Price' }>
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                             <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">

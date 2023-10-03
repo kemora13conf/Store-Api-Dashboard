@@ -97,14 +97,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             formData.append("images", images[i]);
         }
         if(id) {
-            fetch(import.meta.env.VITE_API+'/categories/update/'+id, {
-                method: "PUT",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-                },
-                body: formData
-            })
-            .then(res => res.json())
+            Fetch(import.meta.env.VITE_API+'/categories/update/'+id, "PUT", formData)
             .then(res => {
                 setErrors(prv => {
                     return {
@@ -124,7 +117,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     setLoading(false);
                     return;
                 }
-                toast.success("Category updated successfully", { theme: theme });
+                toast.success(res.message, { theme: theme });
                 setCategory(res.data)
                 setLoading(false);
                 setReload(prv => !prv);
@@ -134,18 +127,11 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                 setPreview([])
             })
             .catch(err => {
-                toast.error("Something went wrong", { theme: theme });
+                toast.error(err.message, { theme: theme });
                 setLoading(false);
             })
         } else {
-            fetch(import.meta.env.VITE_API+'/categories/create', {
-                method: "POST",
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-                },
-                body: formData,
-            })
-            .then(res => res.json())
+            Fetch(import.meta.env.VITE_API+'/categories/create', "POST", formData)
             .then(res => {
                 setErrors(prv => {
                     return {
@@ -165,13 +151,13 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     setLoading(false);
                     return;
                 }
-                toast.success("Category added successfully", { theme: theme });
+                toast.success(res.message, { theme: theme });
                 setLoading(false);
                 setReload(prv => !prv);
                 setIsFormOpen(false);
             })
             .catch(err => {
-                toast.error("Something went wrong", { theme: theme });
+                toast.error(err.message, { theme: theme });
                 setLoading(false);
             })
         }

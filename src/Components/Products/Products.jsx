@@ -12,7 +12,7 @@ import Menu from "../Global/SelectBox/Menu";
 import Option from "../Global/SelectBox/Option";
 import { motion } from 'framer-motion'
 
-function Categories() {
+function Products() {
   const {
     setActiveTab,
     setLoaded,
@@ -152,6 +152,13 @@ function Categories() {
                             </h1>
                         </div>
                     </Option>
+                    <Option value={ 'Category' }>
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                            <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                            { language.category }
+                            </h1>
+                        </div>
+                    </Option>
                     <Option value={ 'Price' }>
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md">
                             <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
@@ -236,4 +243,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default Products;
