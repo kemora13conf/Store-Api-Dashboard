@@ -165,6 +165,11 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     }
                 });
                 if(res.type != "success") {
+                    if(res.type === "error") {
+                        toast.error(res.message, { theme: theme });
+                        setLoading(false);
+                        return;
+                    }
                     setErrors(prv => {
                         return {
                             [res.type]: res.message
@@ -211,6 +216,12 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
         if(id) {
             Fetch(import.meta.env.VITE_API+'/products/'+id, 'GET')
             .then(res => {
+                if(res.type === "error") {
+                    toast.error(res.message, { theme: theme });
+                    setIsFormOpen(false);
+                    setOpenedId(undefined);
+                    setLoading(false);
+                }
                 setData(res.data);
             })
         }
@@ -219,7 +230,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
     ,[reqFinished, selectedLanguage]);
     // set the form data
     useEffect(() => {
-        if(id) {
+        if(id && data) {
             setForm(prv => {
                 return {
                     ...prv,
@@ -363,9 +374,9 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                                 htmlFor="price" 
                                 className="label">{ language.price }</label>
                             <input
-
                                 type="number"
                                 name="price"
+                                step={0.01}
                                 id="price"
                                 min={1}
                                 value={form.price}
@@ -383,7 +394,6 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                                 htmlFor="quantity" 
                                 className="label">{ language.quantity }</label>
                             <input
-
                                 type="number"
                                 name="quantity"
                                 id="quantity"

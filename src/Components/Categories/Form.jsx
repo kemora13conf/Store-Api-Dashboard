@@ -109,13 +109,18 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     }
                 });
                 if(res.type != "success") {
-                    setErrors(prv => {
-                        return {
-                            [res.type]: res.message
-                        }
-                    })
-                    setLoading(false);
-                    return;
+                    if(res.type == "error"){
+                        setLoading(false);
+                        return toast.error(res.message, { theme: theme });
+                    }else{
+                        setErrors(prv => {
+                            return {
+                                [res.type]: res.message
+                            }
+                        })
+                        setLoading(false);
+                        return;
+                    }
                 }
                 toast.success(res.message, { theme: theme });
                 setCategory(res.data)
@@ -143,13 +148,21 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     }
                 });
                 if(res.type != "success") {
-                    setErrors(prv => {
-                        return {
-                            [res.type]: res.message
+                    if(res.type != "success") {
+                        if(res.type === "error") {
+                            toast.error(res.message, { theme: theme });
+                            setLoading(false);
+                            return;
+                        }else{
+                            setErrors(prv => {
+                                return {
+                                    [res.type]: res.message
+                                }
+                            })
+                            setLoading(false);
+                            return;
                         }
-                    })
-                    setLoading(false);
-                    return;
+                    }
                 }
                 toast.success(res.message, { theme: theme });
                 setLoading(false);
@@ -170,6 +183,12 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
         if(id) {
             Fetch(import.meta.env.VITE_API+'/categories/'+id, 'GET')
             .then(res => {
+                if(res.type === "error") {
+                    toast.error(res.message, { theme: theme });
+                    setIsFormOpen(false);
+                    setOpenedId(undefined);
+                    setLoading(false);
+                }
                 setCategory(res.data);
             })
         }
@@ -177,7 +196,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
     ,[reqFinished, selectedLanguage]);
     // set the form data
     useEffect(() => {
-        if(id) {
+        if(id && category) {
             setForm(prv => {
                 return {
                     ...prv,
