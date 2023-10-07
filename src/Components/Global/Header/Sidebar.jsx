@@ -47,7 +47,11 @@ function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
     };
     ref.current.addEventListener("click", handleClickOutside);
     return () => {
-      ref.current.removeEventListener("click", handleClickOutside);
+      try {
+        ref.current.removeEventListener("click", handleClickOutside);
+      } catch (error) {
+        // console.warn(error.message)
+      }
     };
   }, [openedSidebar]);
   return (

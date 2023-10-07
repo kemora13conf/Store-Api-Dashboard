@@ -38,6 +38,12 @@ body{
             bg-light-secondary-200 dark:bg-dark-primary-500
             rounded-md shadow-light dark:shadow-dark
 }
+.image-preview{
+    @apply w-[150px] h-[150px]
+            flex justify-start items-start gap-3 overflow-hidden overflow-x-auto
+            bg-light-secondary-200 dark:bg-dark-primary-500
+            rounded-full shadow-light dark:shadow-dark
+}
 .submit-btn{
     @apply px-4 py-2 flex items-center justify-center
             text-sm text-light-quarternary-500 dark:text-dark-primary-300 

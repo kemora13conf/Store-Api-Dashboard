@@ -41,12 +41,13 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             confirmText: language.confirm_delete,
             cancelText: language.cancel_delete,
             confirm: (close) => {
-                Fetch(import.meta.env.VITE_API+'/categories/'+id, 'DELETE')
+                Fetch(import.meta.env.VITE_API+'/products/'+id, 'DELETE')
                 .then(res => {
                     if(res.type === "success") {
                         toast.success(res.message, { theme })
                         setReload(prv => !prv)
                         setIsFormOpen(false)
+                        setOpenedId(undefined)
                     } else {
                         toast.error(res.message, { theme })
                     }
@@ -144,7 +145,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                 setPreview([])
             })
             .catch(err => {
-                toast.error("Something went wrong", { theme: theme });
+                toast.error(err.message, { theme: theme });
                 setLoading(false);
             })
         } else {

@@ -5,24 +5,26 @@ import Fetch from '../utils';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
 import { PopupsContext } from '../Global/Popups/PopupsContainer';
+import SelectBox from '../Global/SelectBox/SelectBox';
+import Menu from '../Global/SelectBox/Menu';
+import Option from '../Global/SelectBox/Option';
 
 function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
     // get the id param from the url
     const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage, theme } = useContext(AppContext);
     const { setConfirm } = useContext(PopupsContext);
 
-    const [ category, setCategory ] = useState({});
+    const [ data, setData ] = useState({});
     const [ loading, setLoading ] = useState(false);
     const [ form, setForm ] = useState({
-        name: "",
-        title: "",
-        description: "",
-        file: "",
-        remove: []  
+        fullname: "",
+        email: "",
+        phone: "",
+        role: "",
+        image: "", 
     });
-    const [ images, setImages ] = useState([]);
-    const [ preview, setPreview ] = useState([]);
-    const [ oldImagesPreview, setOldImagesPreview ] = useState([]);
+
+    const [ preview, setPreview ] = useState();
     const [ errors, setErrors ] = useState({});
 
     const handleDelete = () => {
@@ -32,7 +34,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             confirmText: language.confirm_delete,
             cancelText: language.cancel_delete,
             confirm: (close) => {
-                Fetch(import.meta.env.VITE_API+'/categories/'+id, 'DELETE')
+                Fetch(import.meta.env.VITE_API+'/clients/'+id, 'DELETE')
                 .then(res => {
                     if(res.type === "success") {
                         toast.success(res.message, { theme })
@@ -57,31 +59,20 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             }
         })
     }
-    const removeImage = (id) => {
-        setForm(prv => {
-            return {
-                ...prv,
-                remove: [
-                    ...prv.remove,
-                    id
-                ]
-            }
-        })
-        setOldImagesPreview(prv => {
-            return prv.filter(img => img._id !== id)
-        })
-    }
+    
     const handleFile = (e) => {
         const files = e.target.files;
         if(files) {
-            setImages(files);
+            setForm(prv => {
+                return {
+                    ...prv,
+                    image: files[0]
+                }
+            })
             for(var i=0; i<files.length; i++) {
                 const file = files[i];
                 setPreview(prv => {
-                    return [
-                        ...prv,
-                        URL.createObjectURL(file)
-                        ]
+                    return URL.createObjectURL(file)
                 });
             }
         }
@@ -90,80 +81,83 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
         e.preventDefault();
         setLoading(true);
         const formData = new FormData();
-        formData.append("name", form.name);
-        formData.append("title", form.title);
-        formData.append("description", form.description);
-        formData.append("remove", form.remove);
-        for(var i=0; i<images.length; i++) {
-            formData.append("images", images[i]);
+        formData.append("fullname", form.fullname);
+        formData.append("email", form.email);
+        formData.append("phone", form.phone);
+        formData.append("role", form.role);
+        if(typeof form.image != "string" && form.image != undefined && form.image != null && form.image != "" ) {
+            formData.append("image", form.image);
         }
         if(id) {
-            Fetch(import.meta.env.VITE_API+'/categories/update/'+id, "PUT", formData)
+            Fetch(
+                import.meta.env.VITE_API+'/products/'+id,
+                "PUT",
+                formData
+            )
             .then(res => {
                 setErrors(prv => {
                     return {
                         ...prv,
-                        name: "",
-                        title: "",
-                        description: "",
-                        file: ""
+                        fullname: "",
+                        email: "",
+                        phone: "",
+                        role: "",
+                        image: "",
                     }
                 });
                 if(res.type != "success") {
-                    if(res.type == "error"){
-                        setLoading(false);
-                        return toast.error(res.message, { theme: theme });
-                    }else{
-                        setErrors(prv => {
-                            return {
-                                [res.type]: res.message
-                            }
-                        })
+                    if(res.type === "error") {
+                        toast.error(res.message, { theme: theme });
                         setLoading(false);
                         return;
                     }
+                    setErrors(prv => {
+                        return {
+                            [res.type]: res.message
+                        }
+                    })
+                    setLoading(false);
+                    return;
                 }
                 toast.success(res.message, { theme: theme });
-                setCategory(res.data)
+                setData(res.data)
                 setLoading(false);
                 setReload(prv => !prv);
-
-                // reset
-                setImages([])
-                setPreview([])
             })
             .catch(err => {
                 toast.error(err.message, { theme: theme });
                 setLoading(false);
             })
         } else {
-            Fetch(import.meta.env.VITE_API+'/categories/create', "POST", formData)
+            Fetch(
+                import.meta.env.VITE_API+'/clients',
+                "POST",
+                formData
+            )
             .then(res => {
                 setErrors(prv => {
                     return {
                         ...prv,
-                        name: "",
-                        title: "",
-                        description: "",
-                        file: ""
+                        fullname: "",
+                        email: "",
+                        phone: "",
+                        role: "",
+                        image: "",
                     }
                 });
                 if(res.type != "success") {
-                    if(res.type != "success") {
-                        if(res.type === "error") {
-                            toast.error(res.message, { theme: theme });
-                            setLoading(false);
-                            return;
-                        }else{
-                            setErrors(prv => {
-                                return {
-                                    [res.type]: res.message
-                                }
-                            })
-                            setLoading(false);
-                            return;
-                        }
+                    if(res.type === "error") {
+                        toast.error(res.message, { theme: theme });
+                        setLoading(false);
+                        return;
                     }
+                    setErrors(prv => {
+                        return {
+                            [res.type]: res.message
+                        }
+                    })
+                    setLoading(false);
+                    return;
                 }
                 toast.success(res.message, { theme: theme });
                 setLoading(false);
@@ -177,12 +171,14 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
         }
     }
 
-    // fetch the category data
+ 
+
+    // fetch the data
     useEffect(() => {
         setLoaded(true);
-        setActiveTab(language.categories);
+        setActiveTab(language.clients);
         if(id) {
-            Fetch(import.meta.env.VITE_API+'/categories/'+id, 'GET')
+            Fetch(import.meta.env.VITE_API+'/clients/'+id, 'GET')
             .then(res => {
                 if(res.type === "error") {
                     toast.error(res.message, { theme: theme });
@@ -190,46 +186,45 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     setOpenedId(undefined);
                     setLoading(false);
                 }
-                setCategory(res.data);
+                setData(res.data);
             })
         }
     }
     ,[reqFinished, selectedLanguage]);
     // set the form data
     useEffect(() => {
-        if(id && category) {
+        if(id && data) {
             setForm(prv => {
                 return {
                     ...prv,
-                    name: category.name,
-                    title: category.title,
-                    description: category.description,
-                    gallery: category.gallery,
-                    remove: []
+                    fullname: data.fullname,
+                    email: data.email,
+                    phone: data.phone,
+                    role: data.role,
+                    image: data.image,
                 }
             })
-            setOldImagesPreview(prv => []);
-            category.gallery?.map(image => {
-                setOldImagesPreview(prv => {
-                    return [
-                        ...prv,
-                        image
-                    ]
+            if(typeof data.image == 'string'){
+                setPreview(prv => {
+                    return import.meta.env.VITE_ASSETS + '/Clients-images/' + data.image
                 })
-            })
+            }else if(typeof data.image == 'object'){
+                setPreview(prv => {
+                    return import.meta.env.VITE_ASSETS + '/Clients-images/' + data.image[0].name
+                })
+            }
         }
-    }
-    ,[category]);
+    },[data]);
     // set the errors
     useEffect(() => {
         setErrors(prv => {
             return {
                 ...prv,
-                name: "",
-                title: "",
-                description: "",
-                file: ""
-
+                fullname: "",
+                email: "",
+                phone: "",
+                role: "",
+                image: "",
             }
         })
     },[form]);
@@ -266,7 +261,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                         text-2xl font-semibold mr-auto
                         text-light-quarternary-500 dark:text-dark-quarternary-500
                     ">
-                    {id ? language.edit+' '+language.category : language.add+' '+language.category}
+                    {id ? language.edit+' '+language.client : language.add+' '+language.client}
                 </h1>
                 {
                     id != undefined ? (
@@ -297,59 +292,77 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                     <div className="flex flex-col gap-2">
                         <label 
-                            htmlFor="name" 
+                            htmlFor="fullname" 
                             className="label"
                         >
-                            { language.name }
+                            { language.fullname }
                         </label>
                         <input
                             type="text"
-                            name="name"
-                            id="name"
-                            value={form.name}
+                            name="fullname"
+                            id="fullname"
+                            value={form.fullname}
                             onChange={handleInput}
-                            className={`input ${errors.name ? '!border-error' : ''}`}
+                            className={`input ${errors.fullname ? '!border-error' : ''}`}
                         />
 
                         {
-                            errors.name && (
-                                <p className="error">{errors.name}</p>
+                            errors.fullname && (
+                                <p className="error">{errors.fullname}</p>
                             )
                         }
                     </div>
                     <div className="flex flex-col gap-2">
                         <label 
-                            htmlFor="title" 
-                            className="label">{ language.title }</label>
+                            htmlFor="email" 
+                            className="label">{ language.email }</label>
                         <input
-
                             type="text"
-                            name="title"
-                            id="title"
-                            value={form.title}
+                            name="email"
+                            id="email"
+                            value={form.email}
                             onChange={handleInput}
-                            className={`input ${errors.title ? '!border-error' : ''}`}
+                            className={`input ${errors.email ? '!border-error' : ''}`}
                         />
                         {
-                            errors.title && (
-                                <p className="error">{errors.title}</p>
+                            errors.email && (
+                                <p className="error">{errors.email}</p>
                             )
                         }
                     </div>
                     <div className="flex flex-col gap-2">
                         <label 
-                            htmlFor="description" 
-                            className="label">{ language.description }</label>
-                        <textarea
-                            name="description"
-                            id="description"
-                            value={form.description}
+                            htmlFor="phone" 
+                            className="label">{ language.phone }</label>
+                        <input
+                            type="text"
+                            name="phone"
+                            id="phone"
+                            value={form.phone}
                             onChange={handleInput}
-                            className={`input ${errors.description ? '!border-error' : ''}`}
+                            className={`input ${errors.phone ? '!border-error' : ''}`}
                         />
                         {
-                            errors.description && (
-                                <p className="error">{errors.description}</p>
+                            errors.phone && (
+                                <p className="error">{errors.phone}</p>
+                            )
+                        }
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <label 
+                            htmlFor="role" 
+                            className="label">{ language.role }</label>
+                        <input
+                            type="text"
+                            name="role"
+                            id="role"
+                            value={form.role}
+                            onChange={handleInput}
+                            className={`input ${errors.role ? '!border-error' : ''}`}
+                        />
+                        {
+                            errors.role && (
+                                <p className="error">{errors.role}</p>
                             )
                         }
                     </div>
@@ -385,66 +398,22 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                             </div>
                             <div className="flex gap-2 flex-col">
                                 <label 
-                                    className="label">{ language.images +' '+ language.preview }</label>
+                                    className="label">{ language.image +' '+ language.preview }</label>
                                 <div 
-                                    className="images-preview snap-x snap-mandatory snap-center overflow-x-auto"
+                                    className="image-preview"
                                 >
                                     {
-                                        preview?.map((img, index) => {
-                                            return (
-                                                <img 
-                                                    src={img} 
-                                                    key={index} 
-                                                    className="
-                                                    max-w-[150px] min-w-[100px] h-full rounded-md object-cover
-                                                    " 
-                                                />
-                                            )
-                                        })
+                                        preview && (
+                                            <img 
+                                                src={preview}
+                                                className="
+                                                    w-full h-full rounded-md object-cover
+                                                " 
+                                            />
+                                        )
                                     }
                                 </div>
                             </div>
-                            {
-                                id
-                                ? (
-                                    <div className="flex gap-2 flex-col">
-                                        <label
-                                            className="label">{ language.old +' '+ language.images +' '+ language.preview }</label>
-                                        <div 
-                                            className="images-preview"
-                                        >
-                                            {
-                                                oldImagesPreview?.map((img, index) => {
-                                                    return (
-                                                        <div 
-                                                            key={index} 
-                                                            className="
-                                                                w-full relative h-full max-w-[150px]
-                                                            ">
-                                                            <div
-                                                                onClick={() => {removeImage(img._id)}}
-                                                                className="
-                                                                    flex w-[30px] h-[30px] 
-                                                                    bg-white rounded-full justify-center items-center 
-                                                                    absolute right-2 top-2 cursor-pointer
-                                                                ">
-                                                                <i className="fas fa-close"></i>
-                                                            </div>
-                                                            <img 
-                                                                src={import.meta.env.VITE_ASSETS + '/Images/' + img.name} 
-                                                                key={index} 
-                                                                className="
-                                                                    w-[150px] h-full rounded-md object-cover
-                                                                "
-                                                            />
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    </div>
-                                ) : null
-                            }
                         </div>
                     </div>
                     <button 
@@ -457,12 +426,13 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                                 <i className="fas fa-spinner fa-spin"></i>
                             ) : null
                         }
-                        <p className=''>{ id ? language.save +' '+ language.category : language.add +' '+ language.new +' '+ language.category }</p>
+                        <p className=''>{ id ? language.save +' '+ language.client : language.add +' '+ language.new +' '+ language.client }</p>
                     </button>
                 </form>
             </div>
         </motion.div>
     )
 }
+
 
 export default Form

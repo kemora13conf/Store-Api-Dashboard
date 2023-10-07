@@ -14,6 +14,7 @@ import Products from "./Components/Products/Products";
 import PopupsProvider from "./Components/Global/Popups/PopupsContainer";
 import './ScrollBarStyles/scrollbar.css'
 import Fetch from "./Components/utils";
+import Clients from "./Components/Clients/Clients";
 
 const AppContext = createContext();
 const AppProvider = ({ children }) => {
@@ -146,9 +147,11 @@ function App() {
                     <Route path="categories/*">
                       <Route index element={<Categories />} />
                     </Route>
-
                     <Route path="products/*">
                       <Route index element={<Products />} />
+                    </Route>
+                    <Route path="clients/*">
+                      <Route index element={<Clients />} />
                     </Route>
 
                   </Route>
