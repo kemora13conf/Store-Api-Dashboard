@@ -1,50 +1,65 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../../App";
 import { toast } from "react-toastify";
 import MyLink from "../MyLink";
 
-function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
-  const { activeTab, language } = useContext(AppContext);
-  const ref = useRef();
+function generateTabs(permissions, language) {
   const tabs = [
     {
         name: language.dashboard,
         icon: "fas fa-tachometer-alt",
         link: ""
-    },
-    {
-        name: language.categories,
-        icon: "fas fa-list",
-        link: "categories"
-    },
-    {
-        name: language.products,
-        icon: "fas fa-box",
-        link: "products"
-    },
-    {
-        name: language.clients,
-        icon: "fas fa-users",
-        link: "clients"
-    },
-    {
-        name: language.orders,
-        icon: "fas fa-shopping-cart",
-        link: "orders"
-    },
-    {
-        name: language.settings,
-        icon: "fas fa-cog",
-        link: "settings"
-    },
-    
-  ];
+    }];
+  if(permissions.includes('edit_category')){
+    tabs.push({
+      name: language.categories,
+      icon: "fas fa-list",
+      link: "categories"
+    })
+  }
+  if(permissions.includes('edit_product')){
+    tabs.push({
+      name: language.products,
+      icon: "fas fa-box",
+      link: "products"
+    })
+  }
+  if(permissions.includes('edit_client')){
+    tabs.push({
+      name: language.clients,
+      icon: "fas fa-users",
+      link: "clients"
+    })
+  }
+  if(permissions.includes('edit_order')){
+    tabs.push({
+      name: language.orders,
+      icon: "fas fa-shopping-cart",
+      link: "orders"
+    })
+  }
+  if(permissions.includes('edit_settings')){
+    tabs.push({
+      name: language.settings,
+      icon: "fas fa-cog",
+      link: "settings"
+    })
+  }
+  return tabs;
+}
+
+
+
+function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
+  const { activeTab, language, currentUser } = useContext(AppContext);
+  const [ tabs, setTabs ] = useState([])
+  const ref = useRef();
+  const handleClickOutside = (e) => {
+    if (ref.current == e.target ) {
+      setOpenedSidebar(false);
+    }
+  };
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (ref.current == e.target ) {
-        setOpenedSidebar(false);
-      }
-    };
     ref.current.addEventListener("click", handleClickOutside);
     return () => {
       try {
@@ -54,6 +69,11 @@ function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
       }
     };
   }, [openedSidebar]);
+  useEffect(() => {
+    if(currentUser){
+      setTabs(generateTabs(currentUser.permissions, language))
+    }
+  }, [currentUser, language])
   return (
     <div
       ref={ref}

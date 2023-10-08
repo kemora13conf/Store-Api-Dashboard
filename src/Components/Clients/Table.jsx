@@ -5,7 +5,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Toggle } from "../Global/ToggleBtn/Toggle";
 import MyLink from "../Global/MyLink";
 import Fetch from "../utils";
-import { PopupsContext } from "../Global/Popups/PopupsContainer";
 import { toast } from "react-toastify";
 
 function Table(props) {
@@ -19,8 +18,7 @@ function Table(props) {
     setOpenedId,
     setIsFormOpen,
   } = props;
-  const { language, setReqFinished, theme } = useContext(AppContext);
-  const { setConfirm } = useContext(PopupsContext);
+  const { language, setReqFinished, theme, setConfirm } = useContext(AppContext);
 
   const changeState = (state, id) => {
     Fetch(

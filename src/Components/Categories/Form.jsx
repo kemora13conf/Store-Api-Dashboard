@@ -4,12 +4,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Fetch from '../utils';
 import { toast } from 'react-toastify';
 import { motion } from 'framer-motion';
-import { PopupsContext } from '../Global/Popups/PopupsContainer';
+
 
 function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
     // get the id param from the url
-    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage, theme } = useContext(AppContext);
-    const { setConfirm } = useContext(PopupsContext);
+    const { setActiveTab, setLoaded, reqFinished, language, selectedLanguage, theme , setConfirm} = useContext(AppContext);
 
     const [ category, setCategory ] = useState({});
     const [ loading, setLoading ] = useState(false);

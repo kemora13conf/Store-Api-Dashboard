@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-import { PopupsContext } from './PopupsContainer'
 import { motion } from 'framer-motion';
+import { AppContext } from '../../../App';
 
 function ConfirmAlert(props) {
-  const { setConfirm } = useContext(PopupsContext)
+  const { setConfirm } = useContext(AppContext)
   const { title, message, cancelText, confirmText, confirm } = props.confirm
   const onCancel = () => {
     setConfirm(undefined)

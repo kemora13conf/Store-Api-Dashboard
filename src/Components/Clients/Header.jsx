@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { AppContext } from '../../App';
 import MyLink from '../Global/MyLink';
 import { AnimatePresence, anticipate, motion } from 'framer-motion';
-import { PopupsContext } from '../Global/Popups/PopupsContainer';
+
 import Fetch from '../utils';
 import { toast } from 'react-toastify';
 
@@ -13,8 +13,7 @@ function Header({
     setOpenedId,
     setReload,
   }) {
-  const { language, theme } = useContext(AppContext);
-  const { setConfirm } = useContext(PopupsContext);
+  const { language, theme, setConfirm } = useContext(AppContext);
   const deleteMany = () => {
     setConfirm({
       title: language.delete +' '+ language.products,
