@@ -39,7 +39,7 @@ function Header() {
               dark:border-dark-primary-500
               `
             }>
-            <img src={`${import.meta.env.VITE_ASSETS}/Clients-images/${currentUser.image}`} className="max-w-[40px] rounded-full shadow-lg" />
+            <img src={`${import.meta.env.VITE_ASSETS}/Clients-images/${currentUser.image}`} className="max-w-[40px] w-[40px] h-[40px] object-cover object-center rounded-full shadow-lg" />
             <div
               onClick={() => setProfileMenu(prv => !prv)} 
               ref={btnRef}

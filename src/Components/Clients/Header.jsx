@@ -22,7 +22,7 @@ function Header({
       cancelText: language.cancel_delete,
       confirm: (close) => {
         Fetch(
-          `${import.meta.env.VITE_API}/products/delete-multiple`, 
+          `${import.meta.env.VITE_API}/clients/delete-multiple`, 
           "DELETE", 
           JSON.stringify({ ids: checkedItems }), 
           { "Content-Type": "application/json" }

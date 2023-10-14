@@ -20,36 +20,6 @@ function Table(props) {
   } = props;
   const { language, setReqFinished, theme, setConfirm } = useContext(AppContext);
 
-  const changeState = (state, id) => {
-    Fetch(
-      import.meta.env.VITE_API + "/products/change-state/" + id,
-      "PUT",
-      JSON.stringify({ state }),
-      { "Content-Type": "application/json" }
-    ).then((res) => {
-      setData((prv) => {
-        return prv.map((category) => {
-          if (category._id === id) {
-            return {
-              ...category,
-              enabled: res.data.enabled,
-            };
-          }
-          return category;
-        });
-      });
-      // toast
-      if(res.type === 'success'){
-        toast.success(res.message, {
-          theme: theme,
-        });
-      }else{
-        toast.error(res.message, {
-          theme: theme,
-        });
-      }
-    });
-  };
   const editItem = (id) => {
     setOpenedId(id);
     setIsFormOpen(true);
@@ -63,7 +33,7 @@ function Table(props) {
       confirmText: language.confirm_delete,
       cancelText: language.cancel_delete,
       confirm: (close) => {
-        Fetch(import.meta.env.VITE_API + "/products/" + id, "DELETE").then(
+        Fetch(import.meta.env.VITE_API + "/clients/" + id, "DELETE").then(
           (res) => {
             if (res.type === "success") {
               setData((prv) => {

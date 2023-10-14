@@ -1,5 +1,12 @@
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import "./App.css";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer } from "react-toastify";
@@ -11,7 +18,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./Components/Home/Home";
 import Categories from "./Components/Categories/Categories";
 import Products from "./Components/Products/Products";
-import './ScrollBarStyles/scrollbar.css'
+import "./ScrollBarStyles/scrollbar.css";
 import Fetch from "./Components/utils";
 import Clients from "./Components/Clients/Clients";
 import ConfirmAlert from "./Components/Global/Popups/ConfirmAlert";
@@ -22,13 +29,13 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
   const [isAuth, setIsAuth] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [reqFinished, setReqFinished] = useState(false);
-  const [theme, setTheme] = useState('light')
-  const [ selectedLanguage, setSelectedLanguage ] = useState('English')
-  const [ language, setLanguage ] = useState({})
+  const [theme, setTheme] = useState("light");
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [language, setLanguage] = useState({});
 
   // state for the confirm popup
-  const [confirm, setConfirm] = useState(undefined)
-  const ref = useRef()
+  const [confirm, setConfirm] = useState(undefined);
+  const ref = useRef();
 
   const stateStore = {
     activeTab,
@@ -52,7 +59,7 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
   };
 
   async function checkAuth() {
-    setReqFinished(prv => false);
+    setReqFinished((prv) => false);
     await fetch(`${import.meta.env.VITE_API}/auth/verify-token`, {
       method: "GET",
       headers: { Authorization: "Bearer " + localStorage.getItem("jwt") },
@@ -61,9 +68,8 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
       .then((res) => {
         if (res.type == "success") {
           setCurrentUser(res.data.current_user);
-          console.log(res.data.current_user.can_edit_clients)
-          setTheme(res.data.current_user.theme)
-          setSelectedLanguage(res.data.current_user.language)
+          setTheme(res.data.current_user.theme);
+          setSelectedLanguage(res.data.current_user.language);
           setIsAuth(true);
         } else {
           setIsAuth(false);
@@ -73,7 +79,7 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
         console.error(err);
         setIsAuth(false);
       });
-    setReqFinished(prv => true);
+    setReqFinished((prv) => true);
   }
 
   useEffect(() => {
@@ -81,82 +87,83 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
   }, [loaded]);
 
   const configLanguage = () => {
-      localStorage.setItem('language', selectedLanguage)
-      Fetch(
-        `${import.meta.env.VITE_ASSETS}/Languages/${selectedLanguage}/default.json`,
-        'GET'
-      )
-      .then(res => {
-        setLanguage(res)
-        localStorage.setItem('languageObj', JSON.stringify(res))
-      })
-  }
+    localStorage.setItem("language", selectedLanguage);
+    Fetch(
+      `${
+        import.meta.env.VITE_ASSETS
+      }/Languages/${selectedLanguage}/default.json`,
+      "GET"
+    ).then((res) => {
+      setLanguage(res);
+      localStorage.setItem("languageObj", JSON.stringify(res));
+    });
+  };
 
   useEffect(() => {
-    let language = localStorage.getItem('language')
+    let language = localStorage.getItem("language");
     if (selectedLanguage != language) {
       configLanguage();
-    }else{
-      if(localStorage.getItem('languageObj')) {
-        setLanguage(JSON.parse(localStorage.getItem('languageObj')))
-      }else{
+    } else {
+      if (localStorage.getItem("languageObj")) {
+        setLanguage(JSON.parse(localStorage.getItem("languageObj")));
+      } else {
         configLanguage();
       }
-    } 
-  }, [selectedLanguage])
+    }
+  }, [selectedLanguage]);
 
   useLayoutEffect(() => {
-    if (theme == 'dark') {
-      document.documentElement.classList.add('dark')
+    if (theme == "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark')
+      document.documentElement.classList.remove("dark");
     }
-  }, [theme])
+  }, [theme]);
   useEffect(() => {
-    if(currentUser?.language != undefined){
+    if (currentUser?.language != undefined) {
       Fetch(
         `${import.meta.env.VITE_API}/clients/update-language`,
-        'PUT',
+        "PUT",
         JSON.stringify({ language: selectedLanguage }),
-        {'Content-Type': 'application/json'}
+        { "Content-Type": "application/json" }
       )
-      .then(res => {
-          if (res.type == 'success') {
-              setSelectedLanguage(res.data)
+        .then((res) => {
+          if (res.type == "success") {
+            setSelectedLanguage(res.data);
           }
-      }
-      ).catch(err => {
-          console.error(err)
-      })
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }, [selectedLanguage]);
 
   useEffect(() => {
-    ref.current.addEventListener('click', (e) => {
-      if(e.target === ref.current){
-        setConfirm(undefined)
-        console.log('click')
+    ref.current.addEventListener("click", (e) => {
+      if (e.target === ref.current) {
+        setConfirm(undefined);
+        console.log("click");
       }
-    })
-  },[])
+    });
+  }, []);
   return (
     <AppContext.Provider value={stateStore}>
-      <div 
+      <div
         ref={ref}
         className={`
               flex justify-center items-center 
-              ${confirm != undefined ? 'bg-light-primary-500 bg-opacity-20 backdrop-blur-md' : 'bg-transparent pointer-events-none'} 
+              ${
+                confirm != undefined
+                  ? "bg-light-primary-500 bg-opacity-20 backdrop-blur-md"
+                  : "bg-transparent pointer-events-none"
+              } 
               fixed z-[3000] w-full min-h-screen top-0 left-0
               transition-all duration-300
-          `}>
-            <AnimatePresence mode='wait'>
-              {
-                confirm != undefined && (
-                  <ConfirmAlert confirm={confirm} />
-                )
-              }
-            </AnimatePresence>
-
+          `}
+      >
+        <AnimatePresence mode="wait">
+          {confirm != undefined && <ConfirmAlert confirm={confirm} />}
+        </AnimatePresence>
       </div>
       {children}
     </AppContext.Provider>
@@ -165,57 +172,48 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
 
 function App() {
   const [currentUser, setCurrentUser] = useState(undefined);
-
   return (
-    <BrowserRouter>
-      <AppProvider {...{ currentUser, setCurrentUser }}>
+    <AppProvider {...{ currentUser, setCurrentUser }}>
+      <BrowserRouter>
         <AnimatePresence mode="wait">
           <ToastContainer />
           <Routes>
             <Route path="/*">
               <Route element={<ProtectedRoute />}>
                 <Route element={<NavigationBar />}>
-
-                  <Route index element={<Home />} />
                   {
-                    currentUser?.permissions?.includes('edit_category') && (
-                      <Route path="categories/*">
-                        <Route index element={<Categories />} />
-                      </Route>
+                    currentUser != undefined && (
+                      <>
+                        <Route index element={<Home />} />
+                        {currentUser?.permissions?.includes("edit_category") && (
+                          <Route path="categories/*">
+                            <Route index element={<Categories />} />
+                          </Route>
+                        )}
+                        {currentUser?.permissions?.includes("edit_product") && (
+                          <Route path="products/*">
+                            <Route index element={<Products />} />
+                          </Route>
+                        )}
+                        {currentUser?.permissions?.includes("edit_client") && (
+                          <Route path="clients/*">
+                            <Route index element={<Clients />} />
+                          </Route>
+                        )}
+                        <Route path="*" element={<Navigate to="/" />} />
+                      </>
                     )
                   }
-
-                  {
-                    currentUser?.permissions?.includes('edit_product') && (
-                      <Route path="products/*">
-                        <Route index element={<Products />} />
-                      </Route>
-                    )
-                  }
-                  
-                  {
-                    currentUser?.permissions?.includes('edit_client') && (
-                      <Route path="clients/*">
-                        <Route index element={<Clients />} />
-                      </Route>
-                    )
-                  }
-
-                  
-
                 </Route>
               </Route>
-
               <Route element={<Locked />}>
                 <Route path="login" element={<Login />} />
               </Route>
-
-              <Route path='*' element={<Navigate to='/' />} />
             </Route>
           </Routes>
         </AnimatePresence>
-      </AppProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AppProvider>
   );
 }
 

@@ -70,7 +70,7 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
                     transition-all duration-300 rounded-lg px-3 py-3 
                     dark:hover:bg-dark-primary-500 dark:hover:shadow
                 ">
-                <img src={`${import.meta.env.VITE_ASSETS}/Clients-images/${ currentUser.image }`} className="max-w-[40px] rounded-full shadow-lg" />
+                <img src={`${import.meta.env.VITE_ASSETS}/Clients-images/${ currentUser.image }`} className="max-w-[40px] w-[40px] h-[40px] object-cover object-center rounded-full shadow-lg" />
                 <div className="flex flex-col text-light-quarternary-500 dark:text-dark-tertiary-300">
                     <h1 className="text-sm font-semibold">{ currentUser.fullname }</h1>
                     <h1 className="text-xs">

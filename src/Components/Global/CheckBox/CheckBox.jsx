@@ -4,18 +4,23 @@ import { motion } from 'framer-motion'
 
 function CheckBox(props) {
     const [ checked, setChecked ] = useState(false);
-
+    const [ loaded, setLoaded ] = useState(false);
     useEffect(() => {
-        if(props.id == 'checkAll'){
-            props.setCheckAll(checked);
-        }
-        else{
-            if(checked){
-                if(!props.checkedItems.includes(props.id)){
-                    props.setCheckedItems(prv => [...prv, props.id])
+        setLoaded(true);
+    }, [])
+    useEffect(() => {
+        if(loaded){
+            if(props.id == 'checkAll'){
+                props.setCheckAll(checked);
+            }
+            else{
+                if(checked){
+                    if(!props.checkedItems.includes(props.id)){
+                        props.setCheckedItems(prv => [...prv, props.id])
+                    }
+                } else {
+                    props.setCheckedItems(prv => prv.filter(item => item != props.id))
                 }
-            } else {
-                props.setCheckedItems(prv => prv.filter(item => item != props.id))
             }
         }
     }, [checked])
@@ -29,10 +34,12 @@ function CheckBox(props) {
         }
     },[props.checkedItems])
     useEffect(() => {
-        if(props.checkAll){
-            setChecked(true);
-        } else {
-            setChecked(false);
+        if(props.checkAll !== undefined){
+            if(props.checkAll){
+                setChecked(true);
+            } else {
+                setChecked(false);
+            }
         }
     }, [props.checkAll])
   return (
