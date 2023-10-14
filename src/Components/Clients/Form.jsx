@@ -47,15 +47,23 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             }
         })
     }
-
     const handleInput = (e) => {
-        const { name, value } = e.target;
-        setForm(prv => {
-            return {
-                ...prv,
-                [name]: value
-            }
-        })
+        if(typeof e == 'string'){
+            setForm(prv => {
+                return {
+                    ...prv,
+                    'role': e
+                }
+            })
+        }else{
+            const { name, value } = e.target;
+            setForm(prv => {
+                return {
+                    ...prv,
+                    [name]: value
+                }
+            })
+        }
     }
     
     const handleFile = (e) => {
@@ -82,13 +90,13 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
         formData.append("fullname", form.fullname);
         formData.append("email", form.email);
         formData.append("phone", form.phone);
-        formData.append("role", form.role);
+        formData.append("role", form.role == language.admin ? 1 : 0);
         if(typeof form.image != "string" && form.image != undefined && form.image != null && form.image != "" ) {
             formData.append("image", form.image);
         }
         if(id) {
             Fetch(
-                import.meta.env.VITE_API+'/products/'+id,
+                import.meta.env.VITE_API+'/clients/'+id,
                 "PUT",
                 formData
             )
@@ -198,7 +206,7 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                     fullname: data.fullname,
                     email: data.email,
                     phone: data.phone,
-                    role: data.role,
+                    role: data.role==1 ? language.admin : language.client,
                     image: data.image,
                 }
             })
@@ -358,6 +366,47 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
                             onChange={handleInput}
                             className={`input ${errors.role ? '!border-error' : ''}`}
                         />
+                        <SelectBox
+                            {...{
+                                selected: form.role,
+                                setSelected: handleInput,
+                                className: `
+                                    w-full flex
+                                    text-sm text-error
+                                    shadow-light dark:shadow-dark
+                                    border border-light-quarternary-200 dark:border-dark-primary-400 !rounded-md
+                                    !bg-transparent
+                                    transition-all duration-300 outline-none 
+                                `,
+                                parentClassName: "w-full"
+                            }}
+                        >
+                            <Menu
+                                className={
+                                    ` flex flex-col gap-2 py-2 px-2 
+                                    absolute top-[calc(100%+10px)] right-0 md:left-0 z-index-[2000]
+                                    max-h-[250px] overflow-hidden overflow-y-auto
+                                    bg-light-primary-500 dark:bg-dark-primary-500 rounded-md shadow-lg dark:shadow-dark
+                                    w-full min-w-fit h-auto 
+                                    border border-light-secondary-500 dark:border-dark-secondary-600`
+                                }
+                            >
+                                <Option key={'client'} value={language.client}>
+                                    <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                                        <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                                            { language.client }
+                                        </h1>
+                                    </div>
+                                </Option>
+                                <Option key={'admin'} value={ language.admin }>
+                                    <div className="flex items-center gap-2 px-3 py-2 rounded-md">
+                                        <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">
+                                            { language.admin }
+                                        </h1>
+                                    </div>
+                                </Option>
+                            </Menu>
+                        </SelectBox>
                         {
                             errors.role && (
                                 <p className="error">{errors.role}</p>
