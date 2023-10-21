@@ -6,12 +6,13 @@ export default function ProtectedRoute(){
     const { isAuth, reqFinished } = useContext(AppContext)
     const Navigate = useNavigate();
     const location = useLocation();
+    console.log(location)
     useEffect(() => {
         if(reqFinished && !isAuth){
             Navigate('login', { state: { from: location.pathname } });
         }
     },[reqFinished, isAuth]);
     return (
-        isAuth == true && <Outlet />
+        isAuth == true && <Outlet /> 
     )
 }

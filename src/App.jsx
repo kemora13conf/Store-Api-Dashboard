@@ -6,7 +6,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import "./App.css";
 import { AnimatePresence } from "framer-motion";
 import { ToastContainer } from "react-toastify";
@@ -22,6 +28,7 @@ import "./ScrollBarStyles/scrollbar.css";
 import Fetch from "./Components/utils";
 import Clients from "./Components/Clients/Clients";
 import ConfirmAlert from "./Components/Global/Popups/ConfirmAlert";
+import Orders from "./Components/Orders/Orders";
 
 const AppContext = createContext();
 const AppProvider = ({ currentUser, setCurrentUser, children }) => {
@@ -181,29 +188,29 @@ function App() {
             <Route path="/*">
               <Route element={<ProtectedRoute />}>
                 <Route element={<NavigationBar />}>
-                  {
-                    currentUser != undefined && (
-                      <>
-                        <Route index element={<Home />} />
-                        {currentUser?.permissions?.includes("edit_category") && (
-                          <Route path="categories/*">
-                            <Route index element={<Categories />} />
-                          </Route>
-                        )}
-                        {currentUser?.permissions?.includes("edit_product") && (
-                          <Route path="products/*">
-                            <Route index element={<Products />} />
-                          </Route>
-                        )}
-                        {currentUser?.permissions?.includes("edit_client") && (
-                          <Route path="clients/*">
-                            <Route index element={<Clients />} />
-                          </Route>
-                        )}
-                        <Route path="*" element={<Navigate to="/" />} />
-                      </>
-                    )
-                  }
+                  <Route index element={<Home />} />
+                  {currentUser?.permissions?.includes("edit_category") && (
+                    <Route path="categories/*">
+                      <Route index element={<Categories />} />
+                    </Route>
+                  )}
+                  {currentUser?.permissions?.includes("edit_product") && (
+                    <Route path="products/*">
+                      <Route index element={<Products />} />
+                    </Route>
+                  )}
+                  {currentUser?.permissions?.includes("edit_client") && (
+                    <Route path="clients/*">
+                      <Route index element={<Clients />} />
+                    </Route>
+                  )}
+
+                  {currentUser?.permissions?.includes("edit_client") && (
+                    <Route path="orders/*">
+                      <Route index element={<Orders />} />
+                    </Route>
+                  )}
+                  <Route path="*" element={<Navigate to="/" />} />
                 </Route>
               </Route>
               <Route element={<Locked />}>
