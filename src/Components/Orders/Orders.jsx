@@ -57,7 +57,7 @@ function Orders() {
       "GET"
     ).then((res) => {
       if(res.type==='success'){
-        setData(res.data.clients);
+        setData(res.data.orders);
         setTotalItems(res.data.total);
         setTotalPages(res.data.pages);
         setReqFinished(true);
