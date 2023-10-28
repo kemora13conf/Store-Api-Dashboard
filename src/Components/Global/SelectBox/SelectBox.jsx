@@ -24,7 +24,7 @@ const SelectBox = (props) => {
                     ${className ? className : ''}
                 `}
             >
-                <div className="flex items-center justify-center w-fit rounded-md text-light-quarternary-500 dark:text-dark-quarternary-400 text ">
+                <div className="flex items-center justify-center w-fit rounded-md text-light-quarternary-500 dark:text-dark-quarternary-400 text whitespace-nowrap">
                     {selected}
                 </div>
                 <div className="flex items-center justify-center w-fit h-fit rounded-full">
