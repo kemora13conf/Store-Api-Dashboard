@@ -205,7 +205,7 @@ function App() {
                     </Route>
                   )}
 
-                  {currentUser?.permissions?.includes("edit_client") && (
+                  {currentUser?.permissions?.includes("edit_order") && (
                     <Route path="orders/*">
                       <Route index element={<Orders />} />
                     </Route>

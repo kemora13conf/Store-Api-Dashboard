@@ -17,8 +17,7 @@ function Table(props) {
     checkAll,
     setCheckAll,
   } = props;
-  const { language, setReqFinished, theme, setConfirm } =
-    useContext(AppContext);
+  const { language, setReqFinished, theme, setConfirm } = useContext(AppContext);
 
   const [states, setStates] = useState([]);
   useEffect(() => {
@@ -30,9 +29,8 @@ function Table(props) {
       }
     );
   }, []);
-  console.log(states);
   return (
-    <div className="w-full h-full overflow-x-auto gap-3 min-h-[350px]">
+    <div className="w-full h-full custom-container gap-3 min-h-[350px]">
       <table className="w-full">
         <thead>
           <tr
@@ -53,15 +51,17 @@ function Table(props) {
             </th>
             <th className="px-4 py-5 text-left">{language.amount}</th>
             <th className="px-4 py-5 text-left">{language.status}</th>
+            <th className="px-4 py-5 text-left">{language.date}</th>
             <th className="px-4 py-5 text-left">{language.invoice}</th>
           </tr>
         </thead>
-        <tbody className="text-sm font-medium text-gray-700">
+        <tbody className="text-sm font-medium text-gray-700 ">
           <AnimatePresence>
             {data?.length > 0 ? (
               data.map((item, index) => {
                 return (
                   <Row
+                    key={index}
                     {...{
                       item,
                       index,

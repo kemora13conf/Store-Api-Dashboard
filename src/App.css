@@ -56,3 +56,8 @@ body{
             hover:text-light-secondary-100 dark:hover:text-dark-primary-300
             transition-all duration-300 outline-none 
 }
+
+.custom-container {
+    overflow-x: auto;
+    overflow-y: visible !important;
+  }
