@@ -32,7 +32,18 @@ function Row(props) {
   const openInvoice = (e) => {
     setInvoiceOpened((prev) => !prev);
   };
-
+  const downloadInvoice = () => {
+    Fetch(
+      `${
+        import.meta.env.VITE_API
+      }/orders/${item._id}/invoice`,
+      "GET"
+    ).then((res) => {
+      if(res.type==='success'){
+        window.open(import.meta.env.VITE_ASSETS+'/Invoices/'+res.data, "_blank");
+      }
+    });
+  };
   // Effects
   useEffect(() => {
     if (selectedState !== language[item.status.name]) {
@@ -257,6 +268,7 @@ function Row(props) {
               ? (
                 <Invoice
                   invoiceOpened={invoiceOpened}
+                  setInvoiceOpened={setInvoiceOpened}
                   order={item}
                   onClose={()=>{
                     setInvoiceOpened(false)
@@ -279,7 +291,7 @@ function Row(props) {
             <i className="fas fa-eye"></i>
           </button>
           <button
-            onClick={() => {}}
+            onClick={downloadInvoice}
             className="
               shadow w-8 h-8 
               flex justify-center items-center rounded-full 
