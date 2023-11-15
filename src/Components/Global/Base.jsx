@@ -9,7 +9,7 @@ const Base = () => {
   return (
     <>
       <Loading loading={loaded} />
-      <div className="flex w-full md:w-[calc(100%-270px)] md:ml-[270px] justify-center pt-[96px] min-h-screen px-2 md:px-4 overflow-hidden">
+      <div className="flex w-full md:w-[calc(100%-285px)] md:ml-[285px] justify-center pt-[80px] min-h-screen px-2 md:px-4 overflow-hidden">
         <Header />
         <div className="w-full max-w-[1640px] md:px-4 py-2">
           <AnimatePresence mode="wait">

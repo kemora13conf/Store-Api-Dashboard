@@ -1,12 +1,12 @@
-body{
-    @apply bg-light-secondary-100 dark:bg-dark-primary-600 scroll-smooth ;
+body {
+  @apply bg-light-secondary-100 dark:bg-dark-primary-600 scroll-smooth;
 }
 
-.label{
-    @apply text-sm font-semibold text-light-quarternary-500 dark:text-dark-primary-200 pl-1
+.label {
+  @apply text-sm font-semibold text-light-quarternary-500 dark:text-dark-primary-200 pl-1;
 }
-.input{
-    @apply w-full px-3 py-2 flex
+.input {
+  @apply w-full px-3 py-2 flex
             text-sm text-light-quarternary-500 dark:text-dark-primary-300 
             shadow-light dark:shadow-dark
             border border-light-quarternary-200 dark:border-dark-primary-400  rounded-md
@@ -14,14 +14,14 @@ body{
             focus:border-transparent dark:focus:border-transparent
             focus:shadow-none
             focus:bg-light-secondary-200 dark:focus:bg-dark-primary-500 
-            transition-all duration-300 outline-none 
+            transition-all duration-300 outline-none;
 }
 
-.error{
-    @apply text-xs text-error
+.error {
+  @apply text-xs text-error;
 }
-.upload-btn{
-    @apply px-4 py-2 flex items-center justify-center
+.upload-btn {
+  @apply px-4 py-2 flex items-center justify-center
             text-sm text-light-quarternary-500 dark:text-dark-primary-300 
             shadow-light dark:shadow-dark
             border border-light-quarternary-200 dark:border-dark-primary-400  rounded-md
@@ -29,23 +29,23 @@ body{
             hover:border-transparent dark:hover:border-transparent
             hover:shadow-none
             hover:bg-light-secondary-200 dark:hover:bg-dark-primary-800 
-            transition-all duration-300 outline-none 
+            transition-all duration-300 outline-none;
 }
 
-.images-preview{
-    @apply w-full h-[120px] p-4 
+.images-preview {
+  @apply w-full h-[120px] p-4 
             flex justify-start items-start gap-3 overflow-hidden overflow-x-auto
             bg-light-secondary-200 dark:bg-dark-primary-500
-            rounded-md shadow-light dark:shadow-dark
+            rounded-md shadow-light dark:shadow-dark;
 }
-.image-preview{
-    @apply w-[150px] h-[150px]
+.image-preview {
+  @apply w-[150px] h-[150px]
             flex justify-start items-start gap-3 overflow-hidden overflow-x-auto
             bg-light-secondary-200 dark:bg-dark-primary-500
-            rounded-full shadow-light dark:shadow-dark
+            rounded-full shadow-light dark:shadow-dark;
 }
-.submit-btn{
-    @apply px-4 py-2 flex items-center justify-center
+.submit-btn {
+  @apply px-4 py-2 flex items-center justify-center
             text-sm text-light-quarternary-500 dark:text-dark-primary-300 
             shadow-light dark:shadow-dark
             border border-light-quarternary-200 dark:border-dark-primary-400  rounded-md
@@ -54,10 +54,34 @@ body{
             hover:shadow-none
             hover:bg-light-quarternary-500 dark:hover:bg-dark-primary-800 
             hover:text-light-secondary-100 dark:hover:text-dark-primary-300
-            transition-all duration-300 outline-none 
+            transition-all duration-300 outline-none;
 }
 
-.custom-container {
-    overflow-x: auto;
-    overflow-y: visible !important;
-  }
+.cust-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-light-secondary-500 border-light-primary-500;
+}
+.cust-scrollbar::-webkit-scrollbar-track {
+  @apply bg-light-primary-500;
+}
+.dark-cust-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-light-quarternary-500 border-light-quarternary-800;
+}
+.dark-cust-scrollbar::-webkit-scrollbar-track {
+  @apply bg-dark-primary-800;
+}
+
+
+/* side bar menu decoration */
+.menu-list-decoration::before{
+  content: '';
+  @apply absolute w-[4px] h-[calc(100%-77px)] top-[40px] left-[26px]
+            bg-light-quarternary-700 dark:bg-dark-secondary-700
+            rounded-full;
+}
+
+.pointer-dot-decoration::before{
+  content: '';
+  @apply absolute w-[10px] h-[10px] -left-[17px]
+            bg-light-quarternary-500 dark:bg-dark-secondary-700
+            rounded-full;
+}

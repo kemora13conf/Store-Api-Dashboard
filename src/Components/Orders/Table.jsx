@@ -30,7 +30,10 @@ function Table(props) {
     );
   }, []);
   return (
-    <div className="w-full h-full custom-container gap-3 min-h-[350px]">
+    <div className={`
+      w-full h-full overflow-x-auto gap-3 min-h-[350px]
+      ${theme === "dark" ? "dark-cust-scrollbar" : "cust-scrollbar"}
+    `}>
       <table className="w-full">
         <thead>
           <tr

@@ -240,11 +240,11 @@ function Form({ id, setReload, setIsFormOpen, setOpenedId }) {
             transition={{ ease: 'linear', duration: 0.2 }}
             exit={{ opacity: 0, x: 300 }}
             key={id}
-            className='
+            className={`
                 px-4 max-w-[420px] w-full
                 bg-light-primary-500 dark:bg-dark-primary-700
                 min-h-screen
-            '>
+            `}>
             <div className="flex gap-3 justify-between items-center w-full py-4">
                 <button
                     onClick={() => {

@@ -111,7 +111,7 @@ export default {
       },
       boxShadow: {
         'border': '0px 0px 0px 3px #ffffff, 0px 0px 0px 5px #2c1b06',
-        'scaled': '270px 1px 3px 0 rgb(0 0 0 / 0.1), 270px 1px 2px -1px rgb(0 0 0 / 0.1)',
+        'scaled': '300px 1px 3px 0 rgb(0 0 0 / 0.1), 270px 1px 2px -1px rgb(0 0 0 / 0.1)',
         'light': '0px 0px 3px rgb(0 0 0 / 0.1)',
         'dark': '0px 0px 10px 0 rgb(0 0 0 / 0.2), 0px 0px 3px -1px rgb(0 0 0 / 0.2)',
         'light-input': '0 0 0 1.5px rgba(0, 110, 255,.5), 0 0 0 6px rgba(0, 110, 255,0.2)'

@@ -51,7 +51,7 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
         ref={ref}
         className="
             min-w-[100vw] min-h-screen 
-            absolute right-0 top-[calc(100%+10px)] 
+            absolute right-0 top-[calc(100%+20px)] 
             cursor-default
         "
     >

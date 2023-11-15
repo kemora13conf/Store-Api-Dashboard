@@ -14,6 +14,7 @@ function Orders() {
     language,
     selectedLanguage,
     setReqFinished,
+    theme,
   } = useContext(AppContext); // global context api
 
   const [data, setData] = useState([]);

@@ -29,6 +29,7 @@ import Fetch from "./Components/utils";
 import Clients from "./Components/Clients/Clients";
 import ConfirmAlert from "./Components/Global/Popups/ConfirmAlert";
 import Orders from "./Components/Orders/Orders";
+import General from "./Components/Settings/General/General";
 
 const AppContext = createContext();
 const AppProvider = ({ currentUser, setCurrentUser, children }) => {
@@ -149,7 +150,6 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
     ref.current.addEventListener("click", (e) => {
       if (e.target === ref.current) {
         setConfirm(undefined);
-        console.log("click");
       }
     });
   }, []);
@@ -208,6 +208,12 @@ function App() {
                   {currentUser?.permissions?.includes("edit_order") && (
                     <Route path="orders/*">
                       <Route index element={<Orders />} />
+                    </Route>
+                  )}
+                  {currentUser?.permissions?.includes("edit_settings") && (
+                    <Route path="settings/*">
+                      <Route index element={<General />} />
+                      <Route path="general" element={<General />} />
                     </Route>
                   )}
                   <Route path="*" element={<Navigate to="/" />} />

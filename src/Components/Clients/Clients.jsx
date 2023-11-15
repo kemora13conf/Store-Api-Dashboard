@@ -20,6 +20,7 @@ function Clients() {
     language,
     selectedLanguage,
     setReqFinished,
+    theme
   } = useContext(AppContext); // global context api
 
   const [data, setData] = useState([]);
@@ -221,6 +222,7 @@ function Clients() {
                     ? "bg-light-quarternary-500 bg-opacity-20 backdrop-blur-[5px]"
                     : "bg-transparent"
                 }
+                ${theme === "dark" ? "dark-cust-scrollbar" : "cust-scrollbar"}
               `}
           >
             <Form
