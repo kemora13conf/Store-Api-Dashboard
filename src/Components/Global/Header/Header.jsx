@@ -20,10 +20,25 @@ function Header() {
   return (
     <>
       <div ref={ref} className={`
-        flex justify-between items-center  fixed z-[51] top-0 left-0 w-full py-3 px-4 md:px-5 transition-all duration-300 reveal
+        flex justify-between items-center 
+        fixed z-[51] top-0 left-0 
+        w-full py-3 px-4
+        before:content-[''] before:absolute 
+        before:top-[66px] before:left-[300px]
+        before:w-[50px] before:h-[50px] before:z-[50] 
+        before:bg-transparent before:rounded-xl 
+        before:shadow-runded-corner-light before:dark:shadow-runded-corner-dark
+        before:transition-all before:duration-300
+        md:px-5 transition-all 
+        duration-300 reveal
         ${openedSidebar ? 'shadow-scaled' : ''}
         `
       }>
+        <div 
+          className="
+            absolute top-0 left-0 z-[50]
+          " 
+        />
         <div className="flex items-center gap-4 pl-2">
           <div onClick={()=>{setOpenedSidebar(prv => !prv)}}  className={`flex md:hidden nav-btn ${openedSidebar ? 'active' : ''}`}>
               <span></span>

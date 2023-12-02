@@ -76,8 +76,8 @@ const AppProvider = ({ currentUser, setCurrentUser, children }) => {
       .then((res) => {
         if (res.type == "success") {
           setCurrentUser(res.data.current_user);
-          setTheme(res.data.current_user.theme);
-          setSelectedLanguage(res.data.current_user.language);
+          setTheme(res.data.current_user.settings.theme);
+          setSelectedLanguage(res.data.current_user.settings.language);
           setIsAuth(true);
         } else {
           setIsAuth(false);

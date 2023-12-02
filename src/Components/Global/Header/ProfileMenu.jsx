@@ -17,7 +17,6 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
         location.replace('/login')
       };
     const handleClik = (toggled) => {
-        console.log(toggled)
         let th = '';
         if(toggled) {
             setTheme('dark')

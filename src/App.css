@@ -74,7 +74,7 @@ body {
 /* side bar menu decoration */
 .menu-list-decoration::before{
   content: '';
-  @apply absolute w-[4px] h-[calc(100%-77px)] top-[40px] left-[26px]
+  @apply absolute w-[2px] h-[calc(100%-77px)] top-[40px] left-[27px]
             bg-light-quarternary-700 dark:bg-dark-secondary-700
             rounded-full;
 }

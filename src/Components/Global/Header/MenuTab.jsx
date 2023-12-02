@@ -62,7 +62,7 @@ function MenuTab({ tab, index: i }) {
             key={i}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
-            transition={{ ease: "linear", duration: 0.2 }}
+            transition={{ ease: "linear", duration: 0.3 }}
             exit={{ opacity: 0, height: 0 }}
             className="
                     w-[calc(100%-40px)] ml-[40px] pb-3 flex flex-col gap-2

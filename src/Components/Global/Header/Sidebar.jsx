@@ -133,7 +133,7 @@ function Sidebar({ openedSidebar, setOpenedSidebar, width }) {
             tabs.map((tab, i) => {
               if(tab.menu){
                 return (
-                  <MenuTab tab={tab} index={i} />
+                  <MenuTab key={i} tab={tab} index={i} />
                 )
               }else{
                 return (

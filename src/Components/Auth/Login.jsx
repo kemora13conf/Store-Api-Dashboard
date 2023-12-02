@@ -22,11 +22,11 @@ export default function Login() {
           localStorage.setItem("jwt", res.data.token);
           setLoading(false)
           setCurrentUser(res.data.currentUser);
-          setTheme(res.data.currentUser.theme)
-          setSelectedLanguage(res.data.currentUser.language)
+          setTheme(res.data.currentUser.settings.theme)
+          setSelectedLanguage(res.data.currentUser.settings.language)
           setIsAuth(true);
           toast.success(res.message, {
-            theme: res.data.currentUser.theme
+            theme: res.data.currentUser.settings.theme
           });
         } else {
           setErrors({ [res.type]: res.message });
