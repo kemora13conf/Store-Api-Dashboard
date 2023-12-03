@@ -23,14 +23,9 @@ function Header() {
         flex justify-between items-center 
         fixed z-[51] top-0 left-0 
         w-full py-3 px-4
-        before:content-[''] before:absolute 
-        before:top-[66px] before:left-[300px]
-        before:w-[50px] before:h-[50px] before:z-[50] 
-        before:bg-transparent before:rounded-xl 
-        before:shadow-runded-corner-light before:dark:shadow-runded-corner-dark
-        before:transition-all before:duration-300
         md:px-5 transition-all 
         duration-300 reveal
+        ${bounds.width < 768 ? '' : 'shadow-scaled'}
         ${openedSidebar ? 'shadow-scaled' : ''}
         `
       }>

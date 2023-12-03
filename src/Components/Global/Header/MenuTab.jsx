@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 function MenuTab({ tab, index: i }) {
   const { language, activeTab } = useContext(AppContext);
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(true);
 
   return (
     <div        
@@ -86,7 +86,7 @@ function MenuTab({ tab, index: i }) {
                         transition-all duration-300 dark:text-dark-quarternary-500
                         hover:bg-light-primary-500 dark:hover:bg-dark-primary-700 group
                         hover:text-light-quarternary-500 dark:hover:text-dark-quarternary-500
-                        relative pointer-dot-decoration
+                        relative pointer-dot-decoration delay-300
                     `}
                 >
                   <div

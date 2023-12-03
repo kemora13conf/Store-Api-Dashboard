@@ -100,12 +100,17 @@ function ProfileMenu({profileMenu, setProfileMenu, btnRef}) {
                     <Menu>
                         <Option value="English" >
                             <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
-                                <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">English</h1>
+                                <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">{language.english}</h1>
                             </div>
                         </Option>
-                        <Option value="Frensh" >
+                        <Option value="French" >
                             <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
-                                <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">Frensh</h1>
+                                <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">{language.french}</h1>
+                            </div>
+                        </Option>
+                        <Option value="Arabic" >
+                            <div className="flex items-center gap-2 px-3 py-2 rounded-lg">
+                                <h1 className="text-light-quarternary-500 dark:text-dark-quarternary-500 text-sm">{language.arabic}</h1>
                             </div>
                         </Option>
                     </Menu>

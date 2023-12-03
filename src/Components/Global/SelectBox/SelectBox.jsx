@@ -53,7 +53,7 @@ const SelectBox = (props) => {
                                             onClick={() => {
                                                 setSelected(childp.props.value);
                                             }}
-                                            className={"cursor-pointer " +  child.props.className + (selected == childp.props.value ? ' selected-option' : '') }  
+                                            className={"cursor-pointer " +  child.props.className + (selected?.toLowerCase() == childp.props.value?.toLowerCase() ? ' selected-option' : '') }  
                                         />
                                     )
                                 })

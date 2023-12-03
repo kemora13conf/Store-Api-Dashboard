@@ -48,22 +48,7 @@ function generateTabs(permissions, language) {
           name: language.general,
           icon: "fas fa-cog",
           link: "settings/general"
-        },
-        {
-          name: language.smtp,
-          icon: "fas fa-envelope",
-          link: "settings/smtp"
-        },
-        {
-          name: language.languages,
-          icon: "fas fa-language",
-          link: "settings/languages"
-        },
-        {
-          name: language.payment,
-          icon: "fas fa-money-bill-wave",
-          link: "settings/payment"
-        },
+        }
       ]
     })
   }
