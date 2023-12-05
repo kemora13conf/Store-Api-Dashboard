@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { AppContext } from "../../App";
 import { motion } from "framer-motion";
 import MyLink from "../Global/MyLink";
+import CountAll from "./Items/CountAll";
 
 function Home() {
   const { reqFinished, setActiveTab, language, setLoaded, selectedLanguage } =
@@ -21,7 +22,9 @@ function Home() {
       exit={{ opacity: 0.4, y: -50 }}
       key={"products"}
       className="flex flex-col w-full h-full"
-    ></motion.div>
+    >
+      <CountAll />
+    </motion.div>
   );
 }
 
