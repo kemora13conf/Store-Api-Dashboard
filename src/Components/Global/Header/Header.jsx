@@ -30,9 +30,19 @@ function Header() {
         `
       }>
         <div 
-          className="
-            absolute top-0 left-0 z-[50]
-          " 
+          className={`
+            absolute top-[66.5px] ${
+              bounds.width < 768 
+              ? openedSidebar ? 'left-[300.5px]' : '-left-[50px]'
+              : 'left-[300.5px]'
+            }
+            z-[50] 
+            pointer-events-none
+            rounded-tl-[50%] 
+            w-[30px] h-[30px]
+            shadow-corner-light dark:shadow-corner-dark
+            transition-all duration-300
+          `}
         />
         <div className="flex items-center gap-4 pl-2">
           <div onClick={()=>{setOpenedSidebar(prv => !prv)}}  className={`flex md:hidden nav-btn ${openedSidebar ? 'active' : ''}`}>

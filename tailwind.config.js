@@ -115,7 +115,8 @@ export default {
         'light': '0px 0px 3px rgb(0 0 0 / 0.1)',
         'dark': '0px 0px 10px 0 rgb(0 0 0 / 0.2), 0px 0px 3px -1px rgb(0 0 0 / 0.2)',
         'light-input': '0 0 0 1.5px rgba(0, 110, 255,.5), 0 0 0 6px rgba(0, 110, 255,0.2)',
-        
+        'corner-light': '-1px -1px rgb(0 0 0 / 0.12), -5px -5px white',
+        'corner-dark': '-1px -1px rgb(0 0 0 / 0.12), -5px -5px #100f1b',
       },
       fontFamily: {
         'sans': ['Poppins', 'sans-serif'],
