@@ -6,7 +6,7 @@ import Fetch from "../../utils";
 import BarChart from "./BarChart";
 import YearForm from "./YearForm";
 
-function OrdersChart() {
+function OrdersChart({bounds}) {
   const { language, theme } = useContext(AppContext);
   const [year, setYear] = useState(new Date().getFullYear());
   const [orders, setOrders] = useState([
@@ -39,7 +39,7 @@ function OrdersChart() {
     setData(data);
   }, [orders]);
   return (
-    <div className="w-full">
+    <div className={bounds.width < 700 ? 'w-full' : 'w-2/3'}>
       <AnimatePresence>
         <motion.div
           initial={{ opacity: 0, scale: 0 }}

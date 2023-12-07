@@ -2,8 +2,7 @@ import React, { createRef, forwardRef, useContext, useEffect, useRef, useState }
 import { Chart } from 'chart.js/auto';
 import { AppContext } from '../../../App';
 
-// FarwordedRef Component
-const BarChart = (props) => {
+const LineChart = (props) => {
     const {data} = props;
     const { language, theme } = useContext(AppContext);
     const ref = useRef();
@@ -11,7 +10,7 @@ const BarChart = (props) => {
     useEffect(() => {
         const ctx = ref.current.getContext('2d');
         const chart = new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             
             data: {
                 labels: language.months_arr,
@@ -22,10 +21,9 @@ const BarChart = (props) => {
                     backgroundColor: [
                         theme == 'light' ? 'rgba(38,38,67)' : 'rgba(245, 235, 235)',
                     ],
-                    borderRadius: 10,
-                    borderSkipped: false,
-                    borderWidth: 5,
-                    borderColor: 'rgba(0,0,0,0)',
+                    fill: false,
+                    tension: 0.4,
+                    borderColor: theme == 'light' ? 'rgba(38,38,67)' : 'rgba(255, 255, 255)',
                 }]
             },
             options: {
@@ -65,4 +63,4 @@ const BarChart = (props) => {
   )
 }
 
-export default BarChart
+export default LineChart
